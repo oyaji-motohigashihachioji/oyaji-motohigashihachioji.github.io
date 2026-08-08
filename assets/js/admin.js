@@ -353,10 +353,14 @@ async function loadBlogPosts() {
 function wireChairmanForm() {
   const form = document.getElementById("chairmanForm");
   const textarea = document.getElementById("chairmanBody");
+  const imageInput = document.getElementById("chairmanImage");
 
   getDoc(doc(db, "siteContent", "chairmanMessage"))
     .then((snap) => {
-      if (snap.exists()) textarea.value = snap.data().body || "";
+      if (snap.exists()) {
+        textarea.value = snap.data().body || "";
+        imageInput.value = snap.data().imageUrl || "";
+      }
     })
     .catch((e) => console.error("会長メッセージの取得に失敗しました:", e));
 
@@ -367,7 +371,11 @@ function wireChairmanForm() {
     try {
       await setDoc(
         doc(db, "siteContent", "chairmanMessage"),
-        { body: textarea.value.trim(), updatedAt: serverTimestamp() },
+        {
+          body: textarea.value.trim(),
+          imageUrl: convertDriveLink(imageInput.value.trim()),
+          updatedAt: serverTimestamp(),
+        },
         { merge: true }
       );
       showMsg("chairmanMsg", "success", "保存しました。");
