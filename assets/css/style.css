@@ -193,6 +193,9 @@ nav.links a.active-link::after{ transform:scaleX(1); }
 .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 @media (max-width:640px){ .field-row{ grid-template-columns:1fr; } }
 
+.or-divider{ display:flex; align-items:center; gap:12px; margin:18px 0; font-size:12px; color:#7d7562; }
+.or-divider::before, .or-divider::after{ content:""; flex:1; height:1px; background:#e3d6a0; }
+
 /* ---------- alerts / badges ---------- */
 .alert{ padding:14px 18px; border-radius:2px; font-size:14px; font-weight:700; margin-bottom:20px; border:2px solid; }
 .alert-info{ background:var(--sun-soft); border-color:var(--sun-deep); color:var(--ink); }
