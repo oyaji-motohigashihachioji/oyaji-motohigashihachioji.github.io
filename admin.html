@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理者ページ — 元八王子東小学校 おやじの会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&family=Shippori+Antique+B1&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Yomogi&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">ADMIN</span>
+    <h1 class="brush">管理者ページ</h1>
+    <p>会員承認・役職設定、活動記録の投稿、ブログの管理、アクセス状況の確認ができます。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div id="adminGate"><div class="empty-state">読み込み中…</div></div>
+
+    <div id="adminApp" style="display:none;">
+      <div class="tab-buttons" id="adminTabs">
+        <button type="button" data-tab="members" class="active">会員管理</button>
+        <button type="button" data-tab="posts">活動記録投稿</button>
+        <button type="button" data-tab="blog">ブログ管理</button>
+        <button type="button" data-tab="stats">アクセス状況</button>
+      </div>
+
+      <div class="admin-panel active" id="panel-members">
+        <div id="membersMsg"></div>
+        <div id="membersTableWrap"><div class="empty-state">読み込み中…</div></div>
+      </div>
+
+      <div class="admin-panel" id="panel-posts">
+        <div class="form-card" style="margin-bottom:32px;">
+          <h3 id="postFormTitle" style="margin-top:0;">新規活動記録を投稿</h3>
+          <div id="postFormMsg"></div>
+          <form id="postForm">
+            <input type="hidden" id="postId">
+            <div class="field-row">
+              <div class="field"><label for="postTitle">タイトル</label><input id="postTitle" required maxlength="80"></div>
+              <div class="field"><label for="postCategory">カテゴリー</label><input id="postCategory" placeholder="運動会・BBQ・クイズラリー等" required maxlength="30"></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="postDate">日付</label><input id="postDate" type="date" required></div>
+              <div class="field"><label for="postPublished">公開状態</label>
+                <select id="postPublished">
+                  <option value="true">公開</option>
+                  <option value="false">下書き</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="postBody">本文</label>
+              <textarea id="postBody" required maxlength="4000"></textarea>
+            </div>
+            <div class="field">
+              <label for="postImages">画像URL（Googleドライブ共有リンク可・複数は改行区切り）</label>
+              <textarea id="postImages" placeholder="https://drive.google.com/file/d/xxxxxxxx/view?usp=sharing"></textarea>
+              <div class="hint">Googleドライブで画像を「リンクを知っている全員が閲覧可」に共有し、そのURLを貼り付けてください。自動的に表示用URLへ変換されます。</div>
+            </div>
+            <button type="submit" class="btn btn-primary">保存する</button>
+            <button type="button" id="postCancelEdit" class="btn btn-dark" style="display:none;">編集をキャンセル</button>
+          </form>
+        </div>
+        <h3>投稿済みの活動記録</h3>
+        <div id="postsTableWrap"><div class="empty-state">読み込み中…</div></div>
+      </div>
+
+      <div class="admin-panel" id="panel-blog">
+        <div id="blogTableWrap"><div class="empty-state">読み込み中…</div></div>
+      </div>
+
+      <div class="admin-panel" id="panel-stats">
+        <div class="stat-grid" id="statGrid"></div>
+        <h3 style="margin-bottom:14px;">直近14日間のアクセス</h3>
+        <div class="daily-bars" id="dailyBars"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script type="module" src="assets/js/admin.js"></script>
+</body>
+</html>

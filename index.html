@@ -7,224 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&family=Shippori+Antique+B1&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Yomogi&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --sun:#F4C000;         /* nền chủ đạo - vàng happi */
-    --sun-soft:#FBE18F;    /* vàng nhạt cho card */
-    --sun-deep:#D9A400;
-    --ink:#100F0D;         /* đen chữ / viền */
-    --paper:#FFFBF0;       /* nền card tương phản */
-    --red:#BE3A26;         /* mực đỏ - hanko / torii */
-    --charcoal:#17140F;    /* mảng đen sâu */
-  }
-  *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
-  body{
-    margin:0; background:var(--sun); color:var(--ink);
-    font-family:"Zen Kaku Gothic New", sans-serif;
-    line-height:1.7; -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3{ font-family:"Shippori Antique B1", sans-serif; letter-spacing:.01em; }
-  .brush{ font-family:"Yuji Boku", serif; }
-  .hand{ font-family:"Yomogi", cursive; }
-  a{ color:inherit; text-decoration:none; }
-  img{ max-width:100%; display:block; }
-  .wrap{ max-width:1200px; margin:0 auto; padding:0 28px; }
-
-  /* torn paper divider between sections */
-  .torn{
-    height:26px; background:var(--ink);
-    clip-path:polygon(0% 100%,2% 0%,5% 100%,8% 0%,11% 100%,14% 0%,17% 100%,20% 0%,23% 100%,26% 0%,29% 100%,32% 0%,35% 100%,38% 0%,41% 100%,44% 0%,47% 100%,50% 0%,53% 100%,56% 0%,59% 100%,62% 0%,65% 100%,68% 0%,71% 100%,74% 0%,77% 100%,80% 0%,83% 100%,86% 0%,89% 100%,92% 0%,95% 100%,98% 0%,100% 100%);
-  }
-  .torn.flip{ transform:scaleY(-1); }
-
-  /* ---------- header ---------- */
-  header{ position:sticky; top:0; z-index:60; background:var(--ink); border-bottom:5px solid var(--sun); }
-  .nav-row{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
-  .brand{ display:flex; align-items:center; gap:12px; }
-  .brand-mark{
-    width:46px; height:46px; border-radius:50%; background:var(--sun); color:var(--ink);
-    display:flex; align-items:center; justify-content:center; font-family:"Yuji Boku";
-    font-size:22px; border:3px solid var(--sun); box-shadow:0 0 0 2px var(--ink) inset;
-  }
-  .brand-text{ color:var(--sun); font-size:14.5px; font-weight:700; line-height:1.3; }
-  .brand-text small{ display:block; font-size:10.5px; font-weight:400; opacity:.7; letter-spacing:.08em; color:#e8dcb0; }
-  nav.links{ display:flex; gap:2px; }
-  nav.links a{ color:#f2e8c8; font-size:14px; font-weight:500; padding:10px 14px; position:relative; }
-  nav.links a:hover{ color:var(--sun); }
-  nav.links a::after{ content:""; position:absolute; left:14px; right:14px; bottom:6px; height:2px; background:var(--sun); transform:scaleX(0); transition:transform .25s; }
-  nav.links a:hover::after{ transform:scaleX(1); }
-  .nav-cta{ background:var(--sun); color:var(--ink) !important; padding:9px 18px !important; font-weight:700 !important; border-radius:2px; }
-  .nav-cta::after{ display:none; }
-  .burger{ display:none; background:none; border:none; color:var(--sun); font-size:24px; }
-
-  /* ---------- hero : full-bleed photo + emblem ---------- */
-  .hero{ position:relative; overflow:hidden; background:var(--ink); }
-  .hero-photo{ position:relative; height:88vh; min-height:560px; }
-  .hero-photo img{ width:100%; height:100%; object-fit:cover; filter:grayscale(.15) contrast(1.08); }
-  .hero-photo::after{
-    content:""; position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(16,15,13,.15) 0%, rgba(16,15,13,.55) 72%, rgba(16,15,13,.92) 100%);
-  }
-  .hero-content{
-    position:absolute; left:0; right:0; bottom:0; z-index:3; padding:0 0 54px;
-  }
-  .ribbon{
-    display:inline-block; background:var(--sun); color:var(--ink);
-    padding:10px 26px 10px 22px; font-weight:900; font-size:13px; letter-spacing:.16em;
-    transform:skewX(-8deg); margin-bottom:22px; box-shadow:6px 6px 0 var(--ink);
-  }
-  .ribbon span{ display:inline-block; transform:skewX(8deg); }
-  .hero h1{
-    color:var(--sun); font-size:clamp(38px,6.4vw,84px); line-height:1.05; margin:0 0 18px; font-weight:400;
-    text-shadow:3px 3px 0 var(--ink), -1px -1px 0 var(--ink);
-  }
-  .hero p.lead{ color:#f2e8c8; font-size:16.5px; max-width:52ch; margin-bottom:28px; }
-  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
-  .btn{ display:inline-flex; align-items:center; gap:8px; padding:14px 26px; font-weight:700; font-size:14.5px; border-radius:2px; border:2px solid var(--sun); transition:transform .15s; }
-  .btn:hover{ transform:translateY(-2px); }
-  .btn-primary{ background:var(--sun); color:var(--ink); }
-  .btn-ghost{ background:transparent; color:var(--sun); }
-
-  .emblem{
-    position:absolute; top:40px; right:40px; z-index:4; width:130px; height:130px;
-  }
-  @media (max-width:760px){ .emblem{ width:92px; height:92px; top:24px; right:20px; } }
-
-  /* ---------- uniform showcase (black band on yellow page) ---------- */
-  .uniform{ background:var(--charcoal); color:var(--sun-soft); padding:74px 0; }
-  .uniform-grid{ display:grid; grid-template-columns:.95fr 1.05fr; gap:54px; align-items:center; }
-  .uniform h2{ color:var(--sun); font-size:clamp(26px,3.6vw,40px); font-weight:400; line-height:1.35; }
-  .uniform p{ color:#cfc6a3; font-size:15.5px; max-width:48ch; }
-  .swatch-row{ display:flex; gap:14px; margin-top:26px; }
-  .swatch{ width:52px; height:52px; border-radius:50%; border:3px solid var(--sun); }
-  .sw1{ background:var(--sun); }
-  .sw2{ background:var(--ink); }
-  .sw3{ background:var(--red); }
-  .uniform-photo{ position:relative; }
-  .uniform-photo img{ border-radius:4px; border:4px solid var(--sun); aspect-ratio:4/5; object-fit:cover; }
-  .uniform-tag{
-    position:absolute; bottom:-18px; left:-18px; background:var(--sun); color:var(--ink);
-    padding:12px 20px; font-weight:900; font-size:13px; letter-spacing:.1em; border:3px solid var(--ink);
-    transform:rotate(-4deg);
-  }
-
-  /* ---------- gallery : ảnh là trọng tâm ---------- */
-  .gallery{ padding:76px 0 30px; }
-  .section-head{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:34px; flex-wrap:wrap; gap:18px; }
-  .section-head .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:900; letter-spacing:.14em; color:var(--red); text-transform:uppercase; }
-  .section-head .eyebrow::before{ content:"●"; font-size:8px; }
-  .section-head h2{ font-size:clamp(28px,3.8vw,42px); font-weight:400; margin:8px 0 0; }
-  .filter-tabs{ display:flex; gap:8px; flex-wrap:wrap; }
-  .filter-tabs button{
-    font-family:"Zen Kaku Gothic New"; font-weight:900; font-size:13.5px;
-    padding:9px 18px; border-radius:2px; border:2px solid var(--ink); background:transparent; color:var(--ink);
-    cursor:pointer; transition:.2s;
-  }
-  .filter-tabs button.active, .filter-tabs button:hover{ background:var(--ink); color:var(--sun); }
-
-  .masonry{ column-count:3; column-gap:22px; }
-  .g-item{
-    break-inside:avoid; margin-bottom:22px; position:relative; border:3px solid var(--ink); border-radius:2px; overflow:hidden;
-    background:var(--paper);
-  }
-  .g-item img{ width:100%; display:block; filter:contrast(1.05); transition:transform .4s ease; }
-  .g-item:hover img{ transform:scale(1.05); }
-  .g-tag{
-    position:absolute; top:12px; left:12px; background:var(--ink); color:var(--sun);
-    font-size:11.5px; font-weight:900; letter-spacing:.06em; padding:6px 12px; border-radius:2px;
-  }
-  .g-cap{
-    position:absolute; left:0; right:0; bottom:0; padding:14px 16px;
-    background:linear-gradient(0deg, rgba(16,15,13,.88), transparent);
-    color:#fff; font-size:13.5px; font-weight:700;
-  }
-  .g-tall img{ aspect-ratio:3/4.2; object-fit:cover; }
-  .g-med img{ aspect-ratio:4/3.3; object-fit:cover; }
-  .g-short img{ aspect-ratio:4/2.7; object-fit:cover; }
-
-  .load-more{ text-align:center; margin:44px 0 6px; }
-
-  /* ---------- record cards (thông tin ngắn gọn, ảnh vẫn chính) ---------- */
-  .records{ padding:70px 0 20px; }
-  .card-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
-  .card{ background:var(--paper); border:3px solid var(--ink); border-radius:2px; overflow:hidden; position:relative; transition:transform .2s; }
-  .card:hover{ transform:translate(-3px,-3px); box-shadow:6px 6px 0 var(--ink); }
-  .card .thumb{ position:relative; aspect-ratio:4/3; overflow:hidden; }
-  .card .thumb img{ width:100%; height:100%; object-fit:cover; }
-  .stamp{
-    position:absolute; top:12px; right:12px; z-index:4; width:64px; height:64px; border-radius:50%;
-    border:2.5px solid var(--red); color:var(--red); background:rgba(255,251,240,.92);
-    display:flex; flex-direction:column; align-items:center; justify-content:center; transform:rotate(-8deg);
-    font-family:"Yomogi", cursive; text-align:center; line-height:1.1;
-  }
-  .stamp .y{ font-size:10px; } .stamp .md{ font-size:14px; font-weight:700; }
-  .card .body{ padding:18px 18px 22px; }
-  .chip{ display:inline-block; font-size:11px; font-weight:900; letter-spacing:.05em; padding:4px 10px; margin-bottom:10px; background:var(--sun); border:2px solid var(--ink); }
-  .card h3{ font-size:16.5px; font-weight:700; margin:0 0 8px; font-family:"Zen Kaku Gothic New"; }
-  .card p{ font-size:13.5px; color:#3a3730; margin:0 0 12px; }
-  .card .more{ font-size:13px; font-weight:900; color:var(--red); }
-  .card .more:hover{ text-decoration:underline; }
-
-  /* ---------- ledger ---------- */
-  .ledger{ padding:60px 0 90px; }
-  .ledger-box{ background:var(--paper); border:3px solid var(--ink); border-radius:2px; padding:36px; display:grid; grid-template-columns:1fr 1fr 1fr; }
-  .ledger-col{ padding:0 22px; border-right:2px dashed var(--ink); }
-  .ledger-col:last-child{ border-right:none; }
-  .ledger-col h4{ font-size:13px; letter-spacing:.1em; color:var(--red); margin:0 0 14px; text-transform:uppercase; font-weight:900; }
-  .ledger-col ul{ list-style:none; margin:0; padding:0; }
-  .ledger-col li{ display:flex; justify-content:space-between; font-size:14px; padding:7px 0; border-bottom:1px solid #e3d6a0; }
-  .ledger-col li b{ font-family:"Shippori Antique B1"; font-weight:400; }
-
-  /* ---------- footer ---------- */
-  footer{ background:var(--ink); color:#cfc6a3; padding:56px 0 26px; }
-  .foot-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; gap:40px; margin-bottom:46px; }
-  .foot-brand{ display:flex; gap:12px; align-items:flex-start; margin-bottom:14px; }
-  footer h5{ color:var(--sun); font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 16px; }
-  footer ul{ list-style:none; margin:0; padding:0; }
-  footer li{ margin-bottom:10px; font-size:14px; }
-  footer a:hover{ color:var(--sun); }
-  .foot-bottom{ border-top:1px solid rgba(255,255,255,.12); padding-top:22px; display:flex; justify-content:space-between; font-size:12.5px; color:#7d7562; flex-wrap:wrap; gap:10px; }
-
-  @media (max-width:920px){
-    .uniform-grid{ grid-template-columns:1fr; }
-    .masonry{ column-count:2; }
-    .card-grid{ grid-template-columns:1fr 1fr; }
-    .ledger-box{ grid-template-columns:1fr; }
-    .ledger-col{ border-right:none; border-bottom:2px dashed var(--ink); padding:18px 0; }
-    .foot-grid{ grid-template-columns:1fr 1fr; }
-  }
-  @media (max-width:640px){
-    nav.links{ display:none; } .burger{ display:block; }
-    .masonry{ column-count:1; }
-    .card-grid{ grid-template-columns:1fr; }
-    .foot-grid{ grid-template-columns:1fr; }
-    .hero-photo{ height:78vh; }
-  }
-  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
-</style>
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-<header>
-  <div class="wrap nav-row">
-    <div class="brand">
-      <div class="brand-mark brush">魂</div>
-      <div class="brand-text">元八王子東小学校<br>おやじの会
-        <small>TEAM OYAJI SINCE 2009</small>
-      </div>
-    </div>
-    <nav class="links">
-      <a href="#">会長のお言葉</a>
-      <a href="#">会則</a>
-      <a href="#" style="color:var(--sun)">活動記録</a>
-      <a href="#">お問合せ</a>
-      <a href="#">リンク</a>
-      <a href="#" class="nav-cta">入会申請</a>
-    </nav>
-    <button class="burger">☰</button>
-  </div>
-</header>
+<div id="site-header"></div>
 
 <section class="hero">
   <div class="hero-photo">
@@ -236,7 +23,7 @@
         <p class="lead">運動会もクイズラリーも、BBQも焼き芋も。黄色い法被を着たおやじたちが、汗と本気で子供たちの「楽しい」を作っています。</p>
         <div class="hero-actions">
           <a href="#gallery" class="btn btn-primary">活動写真を見る →</a>
-          <a href="#" class="btn btn-ghost">入会について</a>
+          <a href="login.html" class="btn btn-ghost">入会について</a>
         </div>
       </div>
     </div>
@@ -282,56 +69,56 @@
         <span class="eyebrow">GALLERY</span>
         <h2>現場は、いつも本気。</h2>
       </div>
-      <div class="filter-tabs">
-        <button class="active">すべて</button>
-        <button>運動会</button>
-        <button>クイズラリー</button>
-        <button>BBQ・焼き芋</button>
+      <div class="filter-tabs" id="galleryFilterTabs">
+        <button class="active" data-filter="すべて">すべて</button>
+        <button data-filter="運動会">運動会</button>
+        <button data-filter="クイズラリー">クイズラリー</button>
+        <button data-filter="BBQ">BBQ・焼き芋</button>
       </div>
     </div>
 
-    <div class="masonry">
-      <div class="g-item g-tall">
+    <div class="masonry" id="masonryGrid">
+      <div class="g-item g-tall" data-cat="運動会">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20250502-093739.jpg" alt="二人三脚">
         <span class="g-tag">運動会</span>
         <div class="g-cap">二人三脚 — 親子の息合わせ</div>
       </div>
-      <div class="g-item g-med">
+      <div class="g-item g-med" data-cat="クイズラリー">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20250303-031603.jpg" alt="クイズラリー">
         <span class="g-tag">クイズラリー</span>
         <div class="g-cap">ハンターから逃げ切れ</div>
       </div>
-      <div class="g-item g-short">
+      <div class="g-item g-short" data-cat="BBQ">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20240907-192330.jpg" alt="BBQ">
         <span class="g-tag">BBQ</span>
         <div class="g-cap">灼熱の中、焼きまくる</div>
       </div>
-      <div class="g-item g-med">
+      <div class="g-item g-med" data-cat="BBQ">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20241215-064411.jpg" alt="焼き芋">
         <span class="g-tag">焼き芋</span>
         <div class="g-cap">釘抜きから始まる本格派</div>
       </div>
-      <div class="g-item g-tall">
+      <div class="g-item g-tall" data-cat="運動会">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20250502-094737.jpg" alt="三輪車走">
         <span class="g-tag">運動会</span>
         <div class="g-cap">おやじの三輪車走・無理あり</div>
       </div>
-      <div class="g-item g-short">
+      <div class="g-item g-short" data-cat="BBQ">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20240907-194759.jpg" alt="すいか割">
         <span class="g-tag">BBQ</span>
         <div class="g-cap">すいか割・中々割れない</div>
       </div>
-      <div class="g-item g-med">
+      <div class="g-item g-med" data-cat="準備">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20250301-104805.jpg" alt="準備風景">
         <span class="g-tag">準備</span>
         <div class="g-cap">前日、総出で仕込み</div>
       </div>
-      <div class="g-item g-tall">
+      <div class="g-item g-tall" data-cat="運動会">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20250502-094447.jpg" alt="パン食い競争">
         <span class="g-tag">運動会</span>
         <div class="g-cap">パン食い競争・持ち帰り可</div>
       </div>
-      <div class="g-item g-med">
+      <div class="g-item g-med" data-cat="BBQ">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20241215-065831.jpg" alt="子供たちの様子">
         <span class="g-tag">焼き芋</span>
         <div class="g-cap">頑張ったね、の一枚</div>
@@ -339,7 +126,7 @@
     </div>
 
     <div class="load-more">
-      <a href="#" class="btn btn-ghost" style="border-color:var(--ink); color:var(--ink);">もっと写真を見る →</a>
+      <a href="blog.html" class="btn btn-ghost" style="border-color:var(--ink); color:var(--ink);">もっと写真を見る →</a>
     </div>
   </div>
 </section>
@@ -352,7 +139,7 @@
         <h2>最近の活動記録</h2>
       </div>
     </div>
-    <div class="card-grid">
+    <div class="card-grid" id="activityCardGrid">
       <article class="card">
         <div class="thumb">
           <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20250502-073412.jpg" alt="新入生歓迎ミニ運動会">
@@ -416,45 +203,8 @@
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <div class="foot-brand">
-          <div class="brand-mark brush">魂</div>
-          <div style="color:var(--sun); font-weight:700; font-size:15px; line-height:1.4;">元八王子東小学校<br>おやじの会</div>
-        </div>
-        <p style="font-size:13.5px; color:#9c9375; max-width:32ch;">黄色い法被を着て、子供と一緒に何が出来る？を合言葉に、2009年から活動しています。</p>
-      </div>
-      <div>
-        <h5>ページ</h5>
-        <ul><li><a href="#">会長のお言葉2017</a></li><li><a href="#">会則</a></li><li><a href="#">活動記録</a></li><li><a href="#">お問合せ</a></li></ul>
-      </div>
-      <div>
-        <h5>もっと見る</h5>
-        <ul><li><a href="#">リンク集</a></li><li><a href="#">入会申請書</a></li><li><a href="#">会長のお言葉2015</a></li></ul>
-      </div>
-      <div>
-        <h5>お問合せ</h5>
-        <ul><li>元八王子東小学校区</li><li>PTA共催窓口</li><li><a href="#">お問合せフォーム →</a></li></ul>
-      </div>
-    </div>
-    <div class="foot-bottom">
-      <span>Copyright (C) 2009 TeamOYAJI. All Rights Reserved.</span>
-      <span>Redesign concept — Yellow × Black / 和風レトロ・法被スタイル</span>
-    </div>
-  </div>
-</footer>
+<div id="site-footer"></div>
 
-<script>
-  const tabs = document.querySelectorAll('.filter-tabs button');
-  tabs.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      tabs.forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-</script>
-
+<script type="module" src="assets/js/index.js"></script>
 </body>
 </html>

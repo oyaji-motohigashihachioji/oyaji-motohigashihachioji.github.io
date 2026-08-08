@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function myProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && myProfile().role == 'admin';
+    }
+
+    function isApprovedMember() {
+      return isSignedIn() && myProfile().status == 'approved';
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // 会員プロフィール: 一覧・詳細の閲覧はログインユーザーのみ。
+    // 本人は role / status / position 以外のフィールド（ニックネーム・自己紹介等）のみ更新可。
+    // これらの承認・権限フィールドの変更は管理者のみ可能。
+    match /users/{uid} {
+      allow read: if isSignedIn();
+      allow create: if isOwner(uid);
+      allow update: if isAdmin() || (
+        isOwner(uid) &&
+        request.resource.data.role == resource.data.role &&
+        request.resource.data.status == resource.data.status &&
+        request.resource.data.position == resource.data.position
+      );
+      allow delete: if isAdmin();
+    }
+
+    // 公式活動記録: 公開済みは誰でも閲覧可。書き込みは管理者のみ。
+    match /posts/{postId} {
+      allow read: if (resource.data.published == true) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // 会員ブログ: 公開済みは誰でも閲覧可。作成は承認済み会員のみ（自分名義のみ）。
+    // 編集・削除は投稿者本人または管理者のみ。
+    match /blogPosts/{postId} {
+      allow read: if (resource.data.published == true) || isAdmin() ||
+        (isSignedIn() && resource.data.authorUid == request.auth.uid);
+      allow create: if isApprovedMember() && request.resource.data.authorUid == request.auth.uid;
+      allow update, delete: if isAdmin() || (isSignedIn() && resource.data.authorUid == request.auth.uid);
+    }
+
+    // 訪問者数トラッキング: 匿名訪問者を含む全員が加算できる簡易カウンター。
+    // 小規模な内輪サイトのため、悪用リスクは低いと判断しシンプルなルールにしている。
+    match /stats/{docId} {
+      allow read: if isSignedIn();
+      allow write: if true;
+    }
+    match /stats_daily/{docId} {
+      allow read: if isSignedIn();
+      allow write: if true;
+    }
+  }
+}
