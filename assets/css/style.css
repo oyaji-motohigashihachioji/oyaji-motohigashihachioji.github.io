@@ -237,7 +237,7 @@ table.admin-table select{ padding:6px 8px; border:2px solid var(--ink); border-r
 
 /* ---------- footer ---------- */
 footer{ background:var(--ink); color:#cfc6a3; padding:56px 0 26px; }
-.foot-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; gap:40px; margin-bottom:32px; }
+.foot-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr 1fr; gap:40px; margin-bottom:32px; }
 .foot-brand{ display:flex; gap:12px; align-items:flex-start; margin-bottom:14px; }
 footer h5{ color:var(--sun); font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 16px; }
 footer ul{ list-style:none; margin:0; padding:0; }
