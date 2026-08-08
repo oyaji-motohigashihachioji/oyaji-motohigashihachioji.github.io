@@ -30,6 +30,7 @@
         <button type="button" data-tab="members" class="active">会員管理</button>
         <button type="button" data-tab="posts">活動記録投稿</button>
         <button type="button" data-tab="blog">ブログ管理</button>
+        <button type="button" data-tab="chairman">会長から一言</button>
         <button type="button" data-tab="stats">アクセス状況</button>
       </div>
 
@@ -86,6 +87,23 @@
 
       <div class="admin-panel" id="panel-blog">
         <div id="blogTableWrap"><div class="empty-state">読み込み中…</div></div>
+      </div>
+
+      <div class="admin-panel" id="panel-chairman">
+        <div class="form-card" style="max-width:760px;">
+          <h3 style="margin-top:0;">会長からのメッセージを編集</h3>
+          <p style="font-size:13.5px; color:#3a3730; margin-bottom:16px;">
+            ここで保存した内容が「会長から一言」ページ（<a href="chairman.html" target="_blank" style="color:var(--red); font-weight:700;">chairman.html</a>）に公開されます。
+          </p>
+          <div id="chairmanMsg"></div>
+          <form id="chairmanForm">
+            <div class="field">
+              <label for="chairmanBody">本文</label>
+              <textarea id="chairmanBody" style="min-height:280px;" maxlength="4000" placeholder="会員・保護者の皆さまへのメッセージをここに記入してください。"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">保存する</button>
+          </form>
+        </div>
       </div>
 
       <div class="admin-panel" id="panel-stats">
