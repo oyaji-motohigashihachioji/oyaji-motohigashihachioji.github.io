@@ -8,6 +8,7 @@ import {
   orderBy,
   limit,
   getDocs,
+  getCountFromServer,
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 await initSite("index");
@@ -15,6 +16,7 @@ await initSite("index");
 wireGalleryFilter();
 if (isFirebaseConfigured) {
   loadDynamicContent();
+  renderCategoryTotals();
 }
 
 function wireGalleryFilter() {
@@ -100,25 +102,46 @@ function renderActivityCards(posts) {
 }
 
 function renderLedger(posts) {
+  // 「直近の記録」は最新12件のサンプルから年別件数を出す簡易表示（正式な合計ではない）
   const cols = document.querySelectorAll(".ledger-col ul");
   if (!cols.length) return;
 
   const byYear = {};
-  const byCategory = {};
   posts.forEach((p) => {
     const year = (p.date || "").slice(0, 4);
     if (year) byYear[year] = (byYear[year] || 0) + 1;
-    const cat = p.category || "記録";
-    byCategory[cat] = (byCategory[cat] || 0) + 1;
   });
 
   const years = Object.keys(byYear).sort((a, b) => b - a).slice(0, 4);
   if (years.length && cols[0]) {
-    cols[0].innerHTML = years.map((y) => `<li>${y}年<b>${byYear[y]}件</b></li>`).join("");
+    cols[0].innerHTML = years
+      .map((y) => `<li><a href="archives.html">${y}年</a><b>${byYear[y]}件</b></li>`)
+      .join("");
   }
+}
 
-  const cats = Object.keys(byCategory).sort((a, b) => byCategory[b] - byCategory[a]).slice(0, 4);
-  if (cats.length && cols[1]) {
-    cols[1].innerHTML = cats.map((c) => `<li>${escapeHtml(c)}<b>${byCategory[c]}件</b></li>`).join("");
+// カテゴリー別の正確な合計件数はサンプルではなく都度カウントクエリで取得する
+async function renderCategoryTotals() {
+  const cols = document.querySelectorAll(".ledger-col ul");
+  if (cols.length < 2) return;
+  const categories = ["記録", "議事録", "予定"];
+  try {
+    const counts = await Promise.all(
+      categories.map((cat) =>
+        getCountFromServer(
+          query(collection(db, "posts"), where("published", "==", true), where("category", "==", cat))
+        )
+      )
+    );
+    const total = counts.reduce((sum, c) => sum + c.data().count, 0);
+    if (total === 0) return; // 未インポート時は静的表示のフォールバックを維持
+    cols[1].innerHTML = categories
+      .map(
+        (c, i) =>
+          `<li><a href="archives.html?category=${encodeURIComponent(c)}">${escapeHtml(c)}</a><b>${counts[i].data().count}件</b></li>`
+      )
+      .join("");
+  } catch (e) {
+    console.warn("カテゴリー集計の取得に失敗しました:", e);
   }
 }
