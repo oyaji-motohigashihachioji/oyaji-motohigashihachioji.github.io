@@ -1,6 +1,7 @@
 import { initSite } from "./site.js";
 import { db, isFirebaseConfigured } from "./firebase-init.js";
 import { escapeHtml } from "./auth-guard.js";
+import { mountSeasonIcon } from "./season.js";
 import {
   collection,
   query,
@@ -13,10 +14,15 @@ import {
 
 await initSite("index");
 
+mountSeasonIcon("seasonIcon");
+document.getElementById("statYears").textContent = new Date().getFullYear() - 2009;
+
 wireGalleryFilter();
 if (isFirebaseConfigured) {
   loadDynamicContent();
   renderCategoryTotals();
+  loadNextEvent();
+  loadPostCount();
 }
 
 function wireGalleryFilter() {
@@ -143,5 +149,47 @@ async function renderCategoryTotals() {
       .join("");
   } catch (e) {
     console.warn("カテゴリー集計の取得に失敗しました:", e);
+  }
+}
+
+// 直近の「予定」記事のうち、本日以降で最も近いものをトップページに大きく告知する
+async function loadNextEvent() {
+  try {
+    const snap = await getDocs(
+      query(
+        collection(db, "posts"),
+        where("published", "==", true),
+        where("category", "==", "予定"),
+        orderBy("date", "asc"),
+        limit(20)
+      )
+    );
+    if (snap.empty) return;
+    const today = new Date().toISOString().slice(0, 10);
+    const upcoming = snap.docs.map((d) => ({ id: d.id, ...d.data() })).find((p) => p.date >= today);
+    if (!upcoming) return;
+
+    const [y, m, d] = (upcoming.date || "").split("-");
+    const dateLabel = y && m && d ? `${y}年${parseInt(m, 10)}月${parseInt(d, 10)}日` : "";
+    const excerpt = (upcoming.body || "").slice(0, 60) + ((upcoming.body || "").length > 60 ? "…" : "");
+
+    document.getElementById("nextEventDate").textContent = dateLabel;
+    document.getElementById("nextEventTitle").textContent = upcoming.title || "";
+    document.getElementById("nextEventExcerpt").textContent = excerpt;
+    document.getElementById("nextEventLink").href = `post.html?id=${upcoming.id}`;
+    document.getElementById("nextEventSection").style.display = "block";
+  } catch (e) {
+    console.warn("次回イベントの取得に失敗しました:", e);
+  }
+}
+
+// 「活動記録数」の正確な合計をstat-stripに表示する
+async function loadPostCount() {
+  try {
+    const snap = await getCountFromServer(query(collection(db, "posts"), where("published", "==", true)));
+    const el = document.getElementById("statPosts");
+    if (el) el.textContent = `${snap.data().count}件`;
+  } catch (e) {
+    console.warn("活動記録数の取得に失敗しました:", e);
   }
 }

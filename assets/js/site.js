@@ -6,6 +6,7 @@ import { initAuthNav } from "./auth-guard.js";
 import { trackVisit, renderVisitorCount } from "./visitor-tracker.js";
 import { isFirebaseConfigured } from "./firebase-init.js";
 import { initImageFallback } from "./img-fallback.js";
+import { initScrollReveal } from "./scroll-reveal.js";
 
 export async function initSite(activePage) {
   initImageFallback();
@@ -13,6 +14,7 @@ export async function initSite(activePage) {
   initAuthNav();
   renderVisitorCount();
   trackVisit();
+  initScrollReveal();
   if (!isFirebaseConfigured) {
     showFirebaseNotice();
   }

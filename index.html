@@ -32,11 +32,12 @@
     <div class="hero-content">
       <div class="wrap">
         <span class="ribbon"><span>元八王子東小学校 父親の会</span></span>
+        <span class="season-icon" id="seasonIcon"></span>
         <h1 class="brush">親父、本気。</h1>
         <p class="lead">運動会もクイズラリーも、BBQも焼き芋も。黄色い法被を着たおやじたちが、汗と本気で子供たちの「楽しい」を作っています。</p>
         <div class="hero-actions">
           <a href="#gallery" class="btn btn-primary">活動写真を見る →</a>
-          <a href="login.html" class="btn btn-ghost">入会について</a>
+          <a href="join.html" class="btn btn-ghost">入会について</a>
         </div>
       </div>
     </div>
@@ -52,10 +53,51 @@
   </svg>
 </section>
 
+<section class="next-event" id="nextEventSection" style="display:none;">
+  <div class="wrap">
+    <div class="next-event-box reveal">
+      <span class="next-event-badge">NEXT EVENT</span>
+      <div style="flex:1; min-width:200px;">
+        <div class="next-event-date" id="nextEventDate"></div>
+        <h3 id="nextEventTitle"></h3>
+        <p id="nextEventExcerpt" style="margin:0; font-size:13.5px; color:#3a3730;"></p>
+      </div>
+      <a href="#" id="nextEventLink" class="btn btn-primary" style="flex-shrink:0;">詳しく見る →</a>
+    </div>
+  </div>
+</section>
+
+<section class="stat-strip">
+  <div class="wrap">
+    <div class="stat-grid reveal">
+      <div class="stat-box">
+        <div class="num"><span id="statYears">17</span>年目</div>
+        <div class="label">2009年発足</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" id="statPosts">-</div>
+        <div class="label">活動記録数</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">元八東</div>
+        <div class="label">対象校区</div>
+      </div>
+    </div>
+    <div class="chairman-teaser reveal">
+      <div class="brand-mark brush" style="width:56px; height:56px; font-size:26px;">魂</div>
+      <div style="flex:1; min-width:200px;">
+        <h3 style="margin:0 0 6px; font-size:16.5px;">会長から一言</h3>
+        <p>おやじの会 会長より、会員・保護者の皆さまへのメッセージを掲載しています。</p>
+      </div>
+      <a href="chairman.html" class="more" style="flex-shrink:0; font-weight:900;">読む →</a>
+    </div>
+  </div>
+</section>
+
 <div class="torn"></div>
 
 <section class="uniform">
-  <div class="wrap uniform-grid">
+  <div class="wrap uniform-grid reveal">
     <div>
       <span class="hand" style="color:var(--sun); font-size:16px;">おやじの証</span>
       <h2>黄色い法被が、<br>おやじの制服。</h2>
@@ -90,7 +132,7 @@
       </div>
     </div>
 
-    <div class="masonry" id="masonryGrid">
+    <div class="masonry reveal" id="masonryGrid">
       <div class="g-item g-tall" data-cat="運動会">
         <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20250502-093739.jpg" alt="二人三脚">
         <span class="g-tag">運動会</span>
@@ -152,7 +194,7 @@
         <h2>最近の活動記録</h2>
       </div>
     </div>
-    <div class="card-grid" id="activityCardGrid">
+    <div class="card-grid reveal" id="activityCardGrid">
       <article class="card">
         <div class="thumb">
           <img src="https://img-www3.hp-ez.com/img/teamoyaji/img_20250502-073412.jpg" alt="新入生歓迎ミニ運動会">
@@ -199,7 +241,7 @@
   <div class="wrap">
     <span class="eyebrow" style="color:var(--red); font-weight:900; font-size:13px; letter-spacing:.14em;">ARCHIVE</span>
     <h2 style="font-weight:400; margin:8px 0 30px; font-size:clamp(24px,3vw,32px);">年別アーカイブ</h2>
-    <div class="ledger-box">
+    <div class="ledger-box reveal">
       <div class="ledger-col">
         <h4>直近の記録</h4>
         <ul><li>2025年<b>4件</b></li><li>2024年<b>7件</b></li><li>2022年<b>3件</b></li><li>2021年<b>1件</b></li></ul>
