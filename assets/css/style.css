@@ -1,0 +1,265 @@
+/* ===================================================================
+   TEAM OYAJI — 元八王子東小学校おやじの会
+   共通スタイルシート（黄×黒・法被テーマ）
+   全ページで読み込む共通CSS。ページ固有の追加スタイルは各HTML内で。
+=================================================================== */
+:root{
+  --sun:#F4C000;         /* 背景メイン - 黄・法被 */
+  --sun-soft:#FBE18F;    /* 薄い黄色（カード用） */
+  --sun-deep:#D9A400;
+  --ink:#100F0D;         /* 黒（文字・枠線） */
+  --paper:#FFFBF0;       /* カード用の対比背景 */
+  --red:#BE3A26;         /* 朱色 - 判子/鳥居 */
+  --charcoal:#17140F;    /* 深い黒 */
+  --green:#3f7d20;
+}
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0; background:var(--sun); color:var(--ink);
+  font-family:"Zen Kaku Gothic New", sans-serif;
+  line-height:1.7; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{ font-family:"Shippori Antique B1", sans-serif; letter-spacing:.01em; }
+.brush{ font-family:"Yuji Boku", serif; }
+.hand{ font-family:"Yomogi", cursive; }
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+.wrap{ max-width:1200px; margin:0 auto; padding:0 28px; }
+button{ font-family:inherit; }
+
+/* torn paper divider between sections */
+.torn{
+  height:26px; background:var(--ink);
+  clip-path:polygon(0% 100%,2% 0%,5% 100%,8% 0%,11% 100%,14% 0%,17% 100%,20% 0%,23% 100%,26% 0%,29% 100%,32% 0%,35% 100%,38% 0%,41% 100%,44% 0%,47% 100%,50% 0%,53% 100%,56% 0%,59% 100%,62% 0%,65% 100%,68% 0%,71% 100%,74% 0%,77% 100%,80% 0%,83% 100%,86% 0%,89% 100%,92% 0%,95% 100%,98% 0%,100% 100%);
+}
+.torn.flip{ transform:scaleY(-1); }
+
+/* ---------- header ---------- */
+header{ position:sticky; top:0; z-index:60; background:var(--ink); border-bottom:5px solid var(--sun); }
+.nav-row{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; position:relative; }
+.brand{ display:flex; align-items:center; gap:12px; }
+.brand-mark{
+  width:46px; height:46px; border-radius:50%; background:var(--sun); color:var(--ink);
+  display:flex; align-items:center; justify-content:center; font-family:"Yuji Boku";
+  font-size:22px; border:3px solid var(--sun); box-shadow:0 0 0 2px var(--ink) inset; flex-shrink:0;
+}
+.brand-text{ color:var(--sun); font-size:14.5px; font-weight:700; line-height:1.3; }
+.brand-text small{ display:block; font-size:10.5px; font-weight:400; opacity:.7; letter-spacing:.08em; color:#e8dcb0; }
+nav.links{ display:flex; align-items:center; gap:2px; }
+nav.links a{ color:#f2e8c8; font-size:14px; font-weight:500; padding:10px 14px; position:relative; }
+nav.links a:hover{ color:var(--sun); }
+nav.links a::after{ content:""; position:absolute; left:14px; right:14px; bottom:6px; height:2px; background:var(--sun); transform:scaleX(0); transition:transform .25s; }
+nav.links a:hover::after{ transform:scaleX(1); }
+nav.links a.active-link{ color:var(--sun); }
+nav.links a.active-link::after{ transform:scaleX(1); }
+.nav-cta{ background:var(--sun); color:var(--ink) !important; padding:9px 18px !important; font-weight:700 !important; border-radius:2px; border:none; cursor:pointer; font-size:14px; }
+.nav-cta::after{ display:none; }
+.nav-avatar-link{ display:flex !important; align-items:center; gap:8px; padding:6px 12px !important; }
+.nav-avatar{ width:32px; height:32px; border-radius:50%; object-fit:cover; border:2px solid var(--sun); background:#4a4636; }
+.burger{ display:none; background:none; border:none; color:var(--sun); font-size:24px; cursor:pointer; }
+@media (max-width:640px){
+  nav.links{ display:none; flex-direction:column; align-items:flex-start; position:absolute; top:100%; left:0; right:0; background:var(--ink); padding:8px 24px 18px; border-bottom:5px solid var(--sun); gap:4px; }
+  nav.links.open{ display:flex; }
+  nav.links a{ width:100%; padding:12px 6px !important; }
+  .burger{ display:block; }
+}
+
+/* ---------- page hero (interior pages) ---------- */
+.page-hero{ background:var(--ink); padding:58px 0 42px; }
+.page-hero .eyebrow{ color:var(--red); font-weight:900; font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; }
+.page-hero h1{ color:var(--sun); font-size:clamp(28px,4.4vw,44px); font-weight:400; margin:10px 0 12px; }
+.page-hero p{ color:#cfc6a3; font-size:15px; max-width:60ch; margin:0; }
+
+/* ---------- hero (top page) ---------- */
+.hero{ position:relative; overflow:hidden; background:var(--ink); }
+.hero-photo{ position:relative; height:88vh; min-height:560px; }
+.hero-photo img{ width:100%; height:100%; object-fit:cover; filter:grayscale(.15) contrast(1.08); }
+.hero-photo::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(16,15,13,.15) 0%, rgba(16,15,13,.55) 72%, rgba(16,15,13,.92) 100%);
+}
+.hero-content{ position:absolute; left:0; right:0; bottom:0; z-index:3; padding:0 0 54px; }
+.ribbon{
+  display:inline-block; background:var(--sun); color:var(--ink);
+  padding:10px 26px 10px 22px; font-weight:900; font-size:13px; letter-spacing:.16em;
+  transform:skewX(-8deg); margin-bottom:22px; box-shadow:6px 6px 0 var(--ink);
+}
+.ribbon span{ display:inline-block; transform:skewX(8deg); }
+.hero h1{
+  color:var(--sun); font-size:clamp(38px,6.4vw,84px); line-height:1.05; margin:0 0 18px; font-weight:400;
+  text-shadow:3px 3px 0 var(--ink), -1px -1px 0 var(--ink);
+}
+.hero p.lead{ color:#f2e8c8; font-size:16.5px; max-width:52ch; margin-bottom:28px; }
+.hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+.btn{ display:inline-flex; align-items:center; gap:8px; padding:14px 26px; font-weight:700; font-size:14.5px; border-radius:2px; border:2px solid var(--sun); transition:transform .15s; cursor:pointer; background:transparent; }
+.btn:hover{ transform:translateY(-2px); }
+.btn-primary{ background:var(--sun); color:var(--ink); }
+.btn-ghost{ background:transparent; color:var(--sun); }
+.btn-dark{ background:transparent; border-color:var(--ink); color:var(--ink); }
+.btn-block{ width:100%; justify-content:center; }
+.btn[disabled]{ opacity:.5; cursor:not-allowed; transform:none; }
+
+.emblem{ position:absolute; top:40px; right:40px; z-index:4; width:130px; height:130px; }
+@media (max-width:760px){ .emblem{ width:92px; height:92px; top:24px; right:20px; } }
+
+/* ---------- uniform showcase ---------- */
+.uniform{ background:var(--charcoal); color:var(--sun-soft); padding:74px 0; }
+.uniform-grid{ display:grid; grid-template-columns:.95fr 1.05fr; gap:54px; align-items:center; }
+.uniform h2{ color:var(--sun); font-size:clamp(26px,3.6vw,40px); font-weight:400; line-height:1.35; }
+.uniform p{ color:#cfc6a3; font-size:15.5px; max-width:48ch; }
+.swatch-row{ display:flex; gap:14px; margin-top:26px; }
+.swatch{ width:52px; height:52px; border-radius:50%; border:3px solid var(--sun); }
+.sw1{ background:var(--sun); } .sw2{ background:var(--ink); } .sw3{ background:var(--red); }
+.uniform-photo{ position:relative; }
+.uniform-photo img{ border-radius:4px; border:4px solid var(--sun); aspect-ratio:4/5; object-fit:cover; }
+.uniform-tag{
+  position:absolute; bottom:-18px; left:-18px; background:var(--sun); color:var(--ink);
+  padding:12px 20px; font-weight:900; font-size:13px; letter-spacing:.1em; border:3px solid var(--ink);
+  transform:rotate(-4deg);
+}
+
+/* ---------- gallery ---------- */
+.gallery{ padding:76px 0 30px; }
+.section-head{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:34px; flex-wrap:wrap; gap:18px; }
+.section-head .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:900; letter-spacing:.14em; color:var(--red); text-transform:uppercase; }
+.section-head .eyebrow::before{ content:"●"; font-size:8px; }
+.section-head h2{ font-size:clamp(28px,3.8vw,42px); font-weight:400; margin:8px 0 0; }
+.filter-tabs, .tab-buttons{ display:flex; gap:8px; flex-wrap:wrap; }
+.filter-tabs button, .tab-buttons button{
+  font-family:"Zen Kaku Gothic New"; font-weight:900; font-size:13.5px;
+  padding:9px 18px; border-radius:2px; border:2px solid var(--ink); background:transparent; color:var(--ink);
+  cursor:pointer; transition:.2s;
+}
+.filter-tabs button.active, .filter-tabs button:hover,
+.tab-buttons button.active, .tab-buttons button:hover{ background:var(--ink); color:var(--sun); }
+
+.masonry{ column-count:3; column-gap:22px; }
+.g-item{ break-inside:avoid; margin-bottom:22px; position:relative; border:3px solid var(--ink); border-radius:2px; overflow:hidden; background:var(--paper); }
+.g-item img{ width:100%; display:block; filter:contrast(1.05); transition:transform .4s ease; }
+.g-item:hover img{ transform:scale(1.05); }
+.g-tag{ position:absolute; top:12px; left:12px; background:var(--ink); color:var(--sun); font-size:11.5px; font-weight:900; letter-spacing:.06em; padding:6px 12px; border-radius:2px; }
+.g-cap{ position:absolute; left:0; right:0; bottom:0; padding:14px 16px; background:linear-gradient(0deg, rgba(16,15,13,.88), transparent); color:#fff; font-size:13.5px; font-weight:700; }
+.g-tall img{ aspect-ratio:3/4.2; object-fit:cover; }
+.g-med img{ aspect-ratio:4/3.3; object-fit:cover; }
+.g-short img{ aspect-ratio:4/2.7; object-fit:cover; }
+.load-more{ text-align:center; margin:44px 0 6px; }
+
+/* ---------- record / blog cards ---------- */
+.records{ padding:70px 0 20px; }
+.card-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.card-grid.cols-2{ grid-template-columns:repeat(2,1fr); }
+.card{ background:var(--paper); border:3px solid var(--ink); border-radius:2px; overflow:hidden; position:relative; transition:transform .2s; }
+.card:hover{ transform:translate(-3px,-3px); box-shadow:6px 6px 0 var(--ink); }
+.card .thumb{ position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--sun-soft); }
+.card .thumb img{ width:100%; height:100%; object-fit:cover; }
+.stamp{
+  position:absolute; top:12px; right:12px; z-index:4; width:64px; height:64px; border-radius:50%;
+  border:2.5px solid var(--red); color:var(--red); background:rgba(255,251,240,.92);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; transform:rotate(-8deg);
+  font-family:"Yomogi", cursive; text-align:center; line-height:1.1;
+}
+.stamp .y{ font-size:10px; } .stamp .md{ font-size:14px; font-weight:700; }
+.card .body{ padding:18px 18px 22px; }
+.chip{ display:inline-block; font-size:11px; font-weight:900; letter-spacing:.05em; padding:4px 10px; margin-bottom:10px; background:var(--sun); border:2px solid var(--ink); }
+.card h3{ font-size:16.5px; font-weight:700; margin:0 0 8px; font-family:"Zen Kaku Gothic New"; }
+.card p{ font-size:13.5px; color:#3a3730; margin:0 0 12px; }
+.card .more{ font-size:13px; font-weight:900; color:var(--red); }
+.card .more:hover{ text-decoration:underline; }
+.card .meta{ font-size:12px; color:#7d7562; margin-bottom:8px; }
+
+/* ---------- ledger ---------- */
+.ledger{ padding:60px 0 90px; }
+.ledger-box{ background:var(--paper); border:3px solid var(--ink); border-radius:2px; padding:36px; display:grid; grid-template-columns:1fr 1fr 1fr; }
+.ledger-col{ padding:0 22px; border-right:2px dashed var(--ink); }
+.ledger-col:last-child{ border-right:none; }
+.ledger-col h4{ font-size:13px; letter-spacing:.1em; color:var(--red); margin:0 0 14px; text-transform:uppercase; font-weight:900; }
+.ledger-col ul{ list-style:none; margin:0; padding:0; }
+.ledger-col li{ display:flex; justify-content:space-between; font-size:14px; padding:7px 0; border-bottom:1px solid #e3d6a0; }
+.ledger-col li b{ font-family:"Shippori Antique B1"; font-weight:400; }
+
+/* ---------- forms ---------- */
+.form-card{ background:var(--paper); border:3px solid var(--ink); border-radius:2px; padding:32px; }
+.form-card.narrow{ max-width:520px; margin:0 auto; }
+.field{ margin-bottom:20px; }
+.field label{ display:block; font-weight:700; font-size:13.5px; margin-bottom:7px; }
+.field .hint{ font-size:12px; color:#7d7562; margin-top:6px; }
+.field input, .field textarea, .field select{
+  width:100%; padding:11px 13px; border:2px solid var(--ink); border-radius:2px;
+  font-family:inherit; font-size:14.5px; background:#fff; color:var(--ink);
+}
+.field input:focus, .field textarea:focus, .field select:focus{ outline:3px solid var(--sun-deep); outline-offset:0; }
+.field textarea{ min-height:160px; resize:vertical; line-height:1.6; }
+.field-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width:640px){ .field-row{ grid-template-columns:1fr; } }
+
+/* ---------- alerts / badges ---------- */
+.alert{ padding:14px 18px; border-radius:2px; font-size:14px; font-weight:700; margin-bottom:20px; border:2px solid; }
+.alert-info{ background:var(--sun-soft); border-color:var(--sun-deep); color:var(--ink); }
+.alert-error{ background:#f8d7d0; border-color:var(--red); color:var(--red); }
+.alert-success{ background:#dcefd0; border-color:var(--green); color:#2b5716; }
+.badge{ display:inline-block; font-size:11px; font-weight:900; padding:4px 11px; border-radius:20px; border:2px solid var(--ink); background:#fff; letter-spacing:.03em; }
+.badge-admin{ background:var(--red); color:#fff; border-color:var(--red); }
+.badge-pending{ background:#eee; color:#7d7562; border-color:#cfc6a3; }
+.badge-approved{ background:var(--green); color:#fff; border-color:var(--green); }
+.badge-role{ background:var(--sun); }
+.avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid var(--ink); background:#ccc; }
+.avatar-lg{ width:88px; height:88px; border:3px solid var(--ink); }
+.empty-state{ text-align:center; padding:60px 20px; color:#7d7562; font-size:14.5px; }
+
+/* ---------- admin table ---------- */
+.table-wrap{ overflow-x:auto; border:3px solid var(--ink); border-radius:2px; background:var(--paper); }
+table.admin-table{ width:100%; border-collapse:collapse; min-width:640px; }
+table.admin-table th, table.admin-table td{ border-bottom:1px solid #e3d6a0; padding:12px 14px; font-size:13.5px; text-align:left; vertical-align:middle; }
+table.admin-table th{ background:var(--ink); color:var(--sun); font-weight:700; white-space:nowrap; }
+table.admin-table tr:last-child td{ border-bottom:none; }
+table.admin-table select{ padding:6px 8px; border:2px solid var(--ink); border-radius:2px; font-family:inherit; font-size:13px; }
+.row-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+.link-btn{ font-size:12.5px; font-weight:900; color:var(--red); cursor:pointer; background:none; border:none; padding:0; }
+.link-btn:hover{ text-decoration:underline; }
+
+/* ---------- stat boxes ---------- */
+.stat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:34px; }
+.stat-box{ background:var(--paper); border:3px solid var(--ink); border-radius:2px; padding:24px; text-align:center; }
+.stat-box .num{ font-size:38px; font-weight:900; font-family:"Shippori Antique B1"; }
+.stat-box .label{ font-size:12.5px; color:#7d7562; letter-spacing:.06em; margin-top:6px; }
+.daily-bars{ display:flex; align-items:flex-end; gap:6px; height:120px; padding:16px; background:var(--paper); border:3px solid var(--ink); border-radius:2px; }
+.daily-bars .bar{ flex:1; background:var(--sun); border:2px solid var(--ink); border-radius:2px 2px 0 0; min-height:3px; position:relative; }
+.daily-bars .bar span{ position:absolute; bottom:100%; left:50%; transform:translateX(-50%); font-size:10px; margin-bottom:2px; white-space:nowrap; }
+
+/* ---------- admin tabs panel ---------- */
+.admin-panel{ display:none; }
+.admin-panel.active{ display:block; }
+
+/* ---------- section utility ---------- */
+.section{ padding:70px 0; }
+.section-narrow{ padding:70px 0; max-width:720px; margin:0 auto; }
+
+/* ---------- footer ---------- */
+footer{ background:var(--ink); color:#cfc6a3; padding:56px 0 26px; }
+.foot-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; gap:40px; margin-bottom:32px; }
+.foot-brand{ display:flex; gap:12px; align-items:flex-start; margin-bottom:14px; }
+footer h5{ color:var(--sun); font-size:13px; letter-spacing:.08em; text-transform:uppercase; margin:0 0 16px; }
+footer ul{ list-style:none; margin:0; padding:0; }
+footer li{ margin-bottom:10px; font-size:14px; }
+footer a:hover{ color:var(--sun); }
+.foot-visitors{ text-align:center; font-size:13px; color:#9c9375; padding:14px 0; border-top:1px solid rgba(255,255,255,.12); border-bottom:1px solid rgba(255,255,255,.12); margin-bottom:18px; }
+.foot-visitors b{ color:var(--sun); }
+.foot-bottom{ padding-top:4px; display:flex; justify-content:space-between; font-size:12.5px; color:#7d7562; flex-wrap:wrap; gap:10px; }
+
+@media (max-width:920px){
+  .uniform-grid{ grid-template-columns:1fr; }
+  .masonry{ column-count:2; }
+  .card-grid, .card-grid.cols-2{ grid-template-columns:1fr 1fr; }
+  .ledger-box{ grid-template-columns:1fr; }
+  .ledger-col{ border-right:none; border-bottom:2px dashed var(--ink); padding:18px 0; }
+  .foot-grid{ grid-template-columns:1fr 1fr; }
+  .stat-grid{ grid-template-columns:1fr; }
+}
+@media (max-width:640px){
+  .masonry{ column-count:1; }
+  .card-grid, .card-grid.cols-2{ grid-template-columns:1fr; }
+  .foot-grid{ grid-template-columns:1fr; }
+  .hero-photo{ height:78vh; }
+}
+@media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }

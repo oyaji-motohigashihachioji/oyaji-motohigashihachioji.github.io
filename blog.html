@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>おやじブログ — 元八王子東小学校 おやじの会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&family=Shippori+Antique+B1&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Yomogi&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">BLOG</span>
+    <h1 class="brush">おやじブログ</h1>
+    <p>会員それぞれの活動の感想や近況を、自由に書き込めるブログです。</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+
+    <div id="blogWriteWrap" style="display:none; margin-bottom:44px;">
+      <div class="form-card">
+        <h3 id="blogFormTitle" style="margin-top:0;">新規ブログ投稿</h3>
+        <div id="blogFormMsg"></div>
+        <form id="blogForm">
+          <input type="hidden" id="blogPostId">
+          <div class="field">
+            <label for="blogTitle">タイトル</label>
+            <input id="blogTitle" required maxlength="80">
+          </div>
+          <div class="field">
+            <label for="blogBody">本文</label>
+            <textarea id="blogBody" required maxlength="6000" placeholder="今日の活動の感想など、自由にどうぞ！"></textarea>
+          </div>
+          <div class="field">
+            <label for="blogImage">画像URL（任意・Googleドライブ共有リンク可）</label>
+            <input id="blogImage" placeholder="https://drive.google.com/file/d/xxxxxxxx/view">
+          </div>
+          <div class="row-actions">
+            <button type="submit" class="btn btn-primary">投稿する</button>
+            <button type="button" id="blogCancelBtn" class="btn btn-dark">キャンセル</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="blogDetailWrap" style="display:none;"></div>
+
+    <div id="blogListWrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">MEMBER VOICES</span>
+          <h2>最新の投稿</h2>
+        </div>
+        <button type="button" id="newPostBtn" class="btn btn-primary" style="display:none;">＋ 新規投稿</button>
+      </div>
+      <div class="card-grid cols-2" id="blogList"><div class="empty-state">読み込み中…</div></div>
+      <div class="load-more" id="loadMoreWrap" style="display:none;">
+        <button type="button" id="loadMoreBtn" class="btn btn-ghost" style="border-color:var(--ink); color:var(--ink);">もっと見る →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script type="module" src="assets/js/blog.js"></script>
+</body>
+</html>

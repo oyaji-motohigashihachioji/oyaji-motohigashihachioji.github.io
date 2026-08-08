@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お問合せ — 元八王子東小学校 おやじの会</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&family=Shippori+Antique+B1&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Yomogi&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+<div id="site-header"></div>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">CONTACT</span>
+    <h1 class="brush">お問合せ</h1>
+    <p>入会のご相談、活動へのご質問など、お気軽にお問い合わせください。</p>
+  </div>
+</section>
+
+<section class="section-narrow">
+  <div class="wrap" style="max-width:560px;">
+    <div class="form-card narrow">
+      <div id="contactMsg"></div>
+      <form id="contactForm">
+        <div class="field">
+          <label for="cName">お名前</label>
+          <input id="cName" type="text" required maxlength="60">
+        </div>
+        <div class="field">
+          <label for="cEmail">メールアドレス</label>
+          <input id="cEmail" type="email" required maxlength="120">
+        </div>
+        <div class="field">
+          <label for="cMessage">お問い合わせ内容</label>
+          <textarea id="cMessage" required maxlength="2000"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">送信する</button>
+      </form>
+      <p class="hint" style="text-align:center; margin-top:18px;">
+        フォームがご利用いただけない場合は、直接メールでもお問い合わせいただけます。<br>
+        <a href="mailto:oyaji.motohigashihachioji@gmail.com" style="color:var(--red); font-weight:700;">oyaji.motohigashihachioji@gmail.com</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script type="module" src="assets/js/contact.js"></script>
+</body>
+</html>
