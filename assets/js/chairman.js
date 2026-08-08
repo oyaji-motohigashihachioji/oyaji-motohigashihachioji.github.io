@@ -23,7 +23,12 @@ async function loadMessage() {
     const d = snap.data();
     const updated = d.updatedAt?.toDate ? d.updatedAt.toDate().toLocaleDateString("ja-JP") : "";
     box.innerHTML = `
-      ${updated ? `<div class="meta" style="margin-bottom:14px;">最終更新: ${updated}</div>` : ""}
+      ${
+        d.imageUrl
+          ? `<img src="${escapeHtml(d.imageUrl)}" alt="会長" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid var(--ink); display:block; margin:0 auto 22px;">`
+          : ""
+      }
+      ${updated ? `<div class="meta" style="margin-bottom:14px; text-align:center;">最終更新: ${updated}</div>` : ""}
       <div style="white-space:pre-wrap; line-height:1.9; font-size:15.5px;">${escapeHtml(d.body)}</div>
     `;
   } catch (e) {

@@ -4,6 +4,8 @@ import { escapeHtml } from "./auth-guard.js";
 import { mountSeasonIcon } from "./season.js";
 import {
   collection,
+  doc,
+  getDoc,
   query,
   where,
   orderBy,
@@ -23,6 +25,7 @@ if (isFirebaseConfigured) {
   renderCategoryTotals();
   loadNextEvent();
   loadPostCount();
+  loadChairmanTeaserPhoto();
 }
 
 function wireGalleryFilter() {
@@ -180,6 +183,20 @@ async function loadNextEvent() {
     document.getElementById("nextEventSection").style.display = "block";
   } catch (e) {
     console.warn("次回イベントの取得に失敗しました:", e);
+  }
+}
+
+// 会長の写真が登録されていれば、トップページの会長テのアイコンを写真に差し替える
+async function loadChairmanTeaserPhoto() {
+  try {
+    const snap = await getDoc(doc(db, "siteContent", "chairmanMessage"));
+    const imageUrl = snap.exists() ? snap.data().imageUrl : "";
+    if (!imageUrl) return;
+    const el = document.getElementById("chairmanTeaserIcon");
+    if (!el) return;
+    el.outerHTML = `<img src="${escapeHtml(imageUrl)}" alt="会長" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:3px solid var(--ink); flex-shrink:0;">`;
+  } catch (e) {
+    console.warn("会長の写真の取得に失敗しました:", e);
   }
 }
 
