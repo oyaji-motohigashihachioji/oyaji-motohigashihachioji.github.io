@@ -1,6 +1,16 @@
 import { initSite } from "./site.js";
-import { watchAuth, isApproved, isAdmin, escapeHtml } from "./auth-guard.js";
+import {
+  watchAuth,
+  isApproved,
+  isAdmin,
+  isPasswordProvider,
+  changePassword,
+  resendVerificationEmail,
+  translateAuthError,
+  escapeHtml,
+} from "./auth-guard.js";
 import { db, isFirebaseConfigured } from "./firebase-init.js";
+import { convertDriveLink } from "./drive-link.js";
 import {
   doc,
   updateDoc,
@@ -33,8 +43,19 @@ if (!isFirebaseConfigured) {
 }
 
 function renderProfile(user, profile) {
+  const isPwUser = isPasswordProvider(user);
+  const needsVerification = isPwUser && !user.emailVerified;
+
   content.innerHTML = `
-    <div class="form-card" style="max-width:640px; margin-bottom:44px;">
+    ${
+      needsVerification
+        ? `<div class="alert alert-info" id="verifyBanner">
+            メールアドレスが未確認です。届いた確認メール内のリンクをクリックしてください。
+            <button type="button" id="resendVerifyBtn" class="link-btn" style="margin-left:10px; color:var(--ink); text-decoration:underline;">確認メールを再送信</button>
+          </div>`
+        : ""
+    }
+    <div class="form-card" style="max-width:640px; margin-bottom:32px;">
       <div style="display:flex; gap:20px; align-items:center; margin-bottom:24px; flex-wrap:wrap;">
         ${profile.photoURL ? `<img class="avatar avatar-lg" src="${escapeHtml(profile.photoURL)}" alt="">` : ""}
         <div>
@@ -50,17 +71,74 @@ function renderProfile(user, profile) {
           <label for="displayName">ニックネーム</label>
           <input id="displayName" type="text" value="${escapeHtml(profile.displayName)}" required maxlength="40">
         </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="age">年齢</label>
+            <input id="age" type="number" min="0" max="120" value="${profile.age ?? ""}">
+          </div>
+          <div class="field">
+            <label for="phone">電話番号</label>
+            <input id="phone" type="tel" maxlength="20" value="${escapeHtml(profile.phone || "")}" placeholder="090-1234-5678">
+          </div>
+        </div>
+        <div class="field">
+          <label for="hobby">趣味</label>
+          <input id="hobby" type="text" maxlength="100" value="${escapeHtml(profile.hobby || "")}" placeholder="釣り、キャンプ、野球観戦 など">
+        </div>
         <div class="field">
           <label for="bio">自己紹介</label>
           <textarea id="bio" maxlength="500" placeholder="よろしくお願いします！">${escapeHtml(profile.bio || "")}</textarea>
-          <div class="hint">役職はメンバー欄では表示されますが、変更は管理者のみ可能です。</div>
+        </div>
+        <div class="field">
+          <label for="photoURL">アバター画像URL（任意・Googleドライブ共有リンク可）</label>
+          <input id="photoURL" type="text" value="${escapeHtml(profile.photoURL || "")}" placeholder="https://drive.google.com/file/d/xxxx/view">
+          <div class="hint">空欄のままにするとGoogleアカウントの写真が使われます。役職はメンバー欄で表示されますが、変更は管理者のみ可能です。</div>
         </div>
         <button type="submit" class="btn btn-primary">保存する</button>
       </form>
     </div>
+
+    <div class="form-card" style="max-width:640px; margin-bottom:44px;">
+      <h3 style="margin-top:0;">パスワード</h3>
+      ${
+        isPwUser
+          ? `
+            <div id="passwordMsg"></div>
+            <form id="passwordForm">
+              <div class="field">
+                <label for="currentPassword">現在のパスワード</label>
+                <input id="currentPassword" type="password" required>
+              </div>
+              <div class="field">
+                <label for="newPassword">新しいパスワード（6文字以上）</label>
+                <input id="newPassword" type="password" required minlength="6">
+              </div>
+              <div class="field">
+                <label for="newPasswordConfirm">新しいパスワード（確認用）</label>
+                <input id="newPasswordConfirm" type="password" required minlength="6">
+              </div>
+              <button type="submit" class="btn btn-dark">パスワードを変更する</button>
+            </form>
+          `
+          : `<p style="font-size:13.5px; color:#3a3730; margin:0;">このアカウントはGoogleアカウントで管理されています。パスワードの変更はGoogleアカウントの設定から行ってください。</p>`
+      }
+    </div>
+
     <h3 style="margin-bottom:16px;">自分のブログ投稿</h3>
     <div id="myPostsList"><div class="empty-state">読み込み中…</div></div>
   `;
+
+  document.getElementById("resendVerifyBtn")?.addEventListener("click", async (e) => {
+    const btn = e.target;
+    btn.disabled = true;
+    try {
+      await resendVerificationEmail();
+      btn.textContent = "送信しました";
+    } catch (err) {
+      console.error(err);
+      btn.disabled = false;
+    }
+  });
 
   document.getElementById("profileForm").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -68,14 +146,42 @@ function renderProfile(user, profile) {
     const btn = e.target.querySelector("button[type=submit]");
     btn.disabled = true;
     try {
+      const ageVal = document.getElementById("age").value;
       await updateDoc(doc(db, "users", user.uid), {
         displayName: document.getElementById("displayName").value.trim(),
+        age: ageVal === "" ? null : Number(ageVal),
+        phone: document.getElementById("phone").value.trim(),
+        hobby: document.getElementById("hobby").value.trim(),
         bio: document.getElementById("bio").value.trim(),
+        photoURL: convertDriveLink(document.getElementById("photoURL").value.trim()),
       });
       msg.innerHTML = `<div class="alert alert-success">保存しました。</div>`;
     } catch (err) {
       console.error(err);
       msg.innerHTML = `<div class="alert alert-error">保存に失敗しました: ${escapeHtml(err.message)}</div>`;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  document.getElementById("passwordForm")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msg = document.getElementById("passwordMsg");
+    const newPassword = document.getElementById("newPassword").value;
+    const confirm = document.getElementById("newPasswordConfirm").value;
+    if (newPassword !== confirm) {
+      msg.innerHTML = `<div class="alert alert-error">新しいパスワードが一致しません。</div>`;
+      return;
+    }
+    const btn = e.target.querySelector("button[type=submit]");
+    btn.disabled = true;
+    try {
+      await changePassword(document.getElementById("currentPassword").value, newPassword);
+      msg.innerHTML = `<div class="alert alert-success">パスワードを変更しました。</div>`;
+      e.target.reset();
+    } catch (err) {
+      console.error(err);
+      msg.innerHTML = `<div class="alert alert-error">${escapeHtml(translateAuthError(err.code))}</div>`;
     } finally {
       btn.disabled = false;
     }
