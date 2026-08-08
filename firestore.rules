@@ -52,6 +52,12 @@ service cloud.firestore {
       allow update, delete: if isAdmin() || (isSignedIn() && resource.data.authorUid == request.auth.uid);
     }
 
+    // サイト固定コンテンツ（会長から一言など）: 誰でも閲覧可、書き込みは管理者のみ。
+    match /siteContent/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // 訪問者数トラッキング: 匿名訪問者を含む全員が加算できる簡易カウンター。
     // 小規模な内輪サイトのため、悪用リスクは低いと判断しシンプルなルールにしている。
     match /stats/{docId} {

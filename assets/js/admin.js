@@ -10,6 +10,7 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
+  setDoc,
   query,
   orderBy,
   serverTimestamp,
@@ -44,6 +45,7 @@ if (!isFirebaseConfigured) {
     loadStats();
     wirePostForm();
     wireLegacyImport();
+    wireChairmanForm();
   });
 }
 
@@ -345,6 +347,37 @@ async function loadBlogPosts() {
     console.error(e);
     wrap.innerHTML = `<div class="alert alert-error">読み込みに失敗しました: ${escapeHtml(e.message)}</div>`;
   }
+}
+
+/* ---------------- 会長から一言 ---------------- */
+function wireChairmanForm() {
+  const form = document.getElementById("chairmanForm");
+  const textarea = document.getElementById("chairmanBody");
+
+  getDoc(doc(db, "siteContent", "chairmanMessage"))
+    .then((snap) => {
+      if (snap.exists()) textarea.value = snap.data().body || "";
+    })
+    .catch((e) => console.error("会長メッセージの取得に失敗しました:", e));
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector("button[type=submit]");
+    btn.disabled = true;
+    try {
+      await setDoc(
+        doc(db, "siteContent", "chairmanMessage"),
+        { body: textarea.value.trim(), updatedAt: serverTimestamp() },
+        { merge: true }
+      );
+      showMsg("chairmanMsg", "success", "保存しました。");
+    } catch (e) {
+      console.error(e);
+      showMsg("chairmanMsg", "error", `保存に失敗しました: ${e.message}`);
+    } finally {
+      btn.disabled = false;
+    }
+  });
 }
 
 /* ---------------- アクセス状況 ---------------- */
