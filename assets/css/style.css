@@ -293,19 +293,22 @@ footer a:hover{ color:var(--sun); }
 .chairman-teaser .brand-mark{ flex-shrink:0; }
 .chairman-teaser p{ margin:6px 0 0; font-size:13.5px; color:#3a3730; max-width:60ch; }
 
-/* ---------- メンバー一覧 ---------- */
-.member-grid{ display:flex; flex-wrap:wrap; gap:22px; }
-.member-card{
-  width:260px; background:var(--paper); border:3px solid var(--ink); border-radius:2px;
-  overflow:hidden; transition:transform .2s;
+/* ---------- メンバー一覧（横並びリスト） ---------- */
+.member-list{ display:flex; flex-direction:column; gap:10px; }
+.member-row{ background:var(--paper); border:2px solid var(--ink); border-radius:2px; }
+.member-row-main{ display:flex; align-items:center; gap:14px; padding:12px 16px; flex-wrap:wrap; }
+.member-row-main .avatar{ flex-shrink:0; }
+.member-row-info{ flex:1 1 220px; min-width:0; }
+.member-row-info h3{ margin:0 0 4px; font-size:15px; font-weight:700; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.member-row-info .meta{ margin:0; font-size:12px; color:#7d7562; }
+.member-row-toggle{
+  flex-shrink:0; font-size:12.5px; font-weight:900; color:var(--red); background:none; border:none;
+  cursor:pointer; padding:6px 4px; white-space:nowrap;
 }
-.member-card:hover{ transform:translate(-3px,-3px); box-shadow:6px 6px 0 var(--ink); }
-.member-card-top{ text-align:center; padding:26px 18px 18px; }
-.member-card-top .badge{ margin:2px 3px; }
-.member-card .meta{ margin-top:10px; font-size:12px; color:#7d7562; }
-.member-card-detail{ border-top:2px dashed #cfc6a3; padding:14px 18px 18px; text-align:left; }
-.member-card-detail p{ font-size:12.5px; line-height:1.6; margin:0 0 8px; }
-.member-card-detail p:last-child{ margin-bottom:0; }
-.member-card-detail b{ color:var(--red); font-weight:700; }
-.member-card-detail .bio{ color:#3a3730; white-space:pre-wrap; }
-@media (max-width:640px){ .member-card{ width:100%; } }
+.member-row-toggle:hover{ text-decoration:underline; }
+.member-row-detail{ display:none; padding:2px 16px 16px calc(16px + 40px + 14px); border-top:1px dashed #cfc6a3; margin-top:2px; }
+.member-row.open .member-row-detail{ display:block; }
+.member-row-detail p{ font-size:12.5px; line-height:1.7; margin:10px 0 0; }
+.member-row-detail b{ color:var(--red); font-weight:700; }
+.member-row-detail .bio{ color:#3a3730; white-space:pre-wrap; }
+@media (max-width:640px){ .member-row-detail{ padding-left:16px; } }

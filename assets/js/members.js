@@ -46,25 +46,38 @@ async function loadMembers() {
         const m = d.data();
         const year = m.joinedAt?.toDate ? m.joinedAt.toDate().getFullYear() : "-";
         const hasDetail = m.hobby || m.bio;
-        return `<article class="member-card">
-          <div class="member-card-top">
-            ${m.photoURL ? `<img class="avatar avatar-lg" src="${escapeHtml(m.photoURL)}" alt="" style="margin:0 auto 14px;">` : ""}
-            <h3 style="margin-bottom:6px;">${escapeHtml(m.displayName)}</h3>
-            <span class="badge badge-role">${escapeHtml(m.position || "一般会員")}</span>
-            ${m.role === "admin" ? '<span class="badge badge-admin">管理者</span>' : ""}
-            <p class="meta">${year}年 入会${m.age ? ` ・ ${escapeHtml(String(m.age))}歳` : ""}</p>
+        return `<div class="member-row">
+          <div class="member-row-main">
+            ${m.photoURL ? `<img class="avatar" src="${escapeHtml(m.photoURL)}" alt="">` : ""}
+            <div class="member-row-info">
+              <h3>
+                ${escapeHtml(m.displayName)}
+                <span class="badge badge-role">${escapeHtml(m.position || "一般会員")}</span>
+                ${m.role === "admin" ? '<span class="badge badge-admin">管理者</span>' : ""}
+              </h3>
+              <p class="meta">${year}年 入会${m.age ? ` ・ ${escapeHtml(String(m.age))}歳` : ""}</p>
+            </div>
+            ${hasDetail ? `<button type="button" class="member-row-toggle">続きを読む ▾</button>` : ""}
           </div>
           ${
             hasDetail
-              ? `<div class="member-card-detail">
+              ? `<div class="member-row-detail">
                   ${m.hobby ? `<p><b>趣味：</b>${escapeHtml(m.hobby)}</p>` : ""}
                   ${m.bio ? `<p class="bio">${escapeHtml(m.bio)}</p>` : ""}
                 </div>`
               : ""
           }
-        </article>`;
+        </div>`;
       })
       .join("");
+
+    list.querySelectorAll(".member-row-toggle").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = btn.closest(".member-row");
+        const open = row.classList.toggle("open");
+        btn.textContent = open ? "閉じる ▴" : "続きを読む ▾";
+      });
+    });
   } catch (e) {
     console.error(e);
     list.innerHTML = `<div class="alert alert-error">読み込みに失敗しました: ${escapeHtml(e.message)}</div>`;
