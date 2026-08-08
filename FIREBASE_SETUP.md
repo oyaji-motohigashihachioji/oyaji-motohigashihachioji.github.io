@@ -9,15 +9,13 @@
 3. 下の方の「マイアプリ」に Web アプリ（`</>` アイコン）がなければ「アプリを追加」で Web アプリを1つ追加する
 4. 表示される `firebaseConfig` オブジェクトの値をコピーし、[assets/js/firebase-config.js](assets/js/firebase-config.js) の `YOUR_...` の部分をすべて置き換える
 
-## 2. Firebase Authentication（Google ログイン／メール・パスワード）を有効化する
+## 2. Firebase Authentication（Google ログイン）を有効化する
 
 1. Firebase Console 左メニュー →「Authentication」→「Sign-in method」タブ
 2. 「Google」を選択して有効化し、プロジェクトのサポートメールを設定して保存
-3. 「メール/パスワード」も選択して有効化して保存（会員登録フォームのメール/パスワード登録・ログイン・パスワード再設定に必要）
-4. 「Settings」タブ →「承認済みドメイン」に以下を追加
+3. 「Settings」タブ →「承認済みドメイン」に以下を追加
    - ローカルテスト用: `localhost`
    - 本番公開用: `oyaji-motohigashihachioji.github.io`
-5. （任意）「Templates」タブで確認メール・パスワード再設定メールの文面を日本語に編集できます
 
 ## 3. Cloud Firestore を有効化し、セキュリティルールを設定する
 

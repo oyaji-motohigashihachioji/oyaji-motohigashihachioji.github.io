@@ -17,7 +17,7 @@
   <div class="wrap">
     <span class="eyebrow">MEMBER LOGIN</span>
     <h1 class="brush">会員ログイン</h1>
-    <p>Googleアカウント、またはメールアドレスでログイン・新規登録できます。初めての方は自動的に会員登録され、管理者の承認をお待ちいただきます。</p>
+    <p>Googleアカウントでログインしてください。初めての方は自動的に会員登録され、管理者の承認をお待ちいただきます。</p>
   </div>
 </section>
 
@@ -27,60 +27,9 @@
       <div id="loginMessage"></div>
 
       <div id="loggedOutView">
-        <div class="tab-buttons" id="authTabs" style="margin-bottom:22px;">
-          <button type="button" class="active" data-tab="login">ログイン</button>
-          <button type="button" data-tab="register">新規登録</button>
-        </div>
-
-        <div id="loginTab">
-          <button id="googleLoginBtn" type="button" class="btn btn-primary btn-block">
-            Googleでログイン
-          </button>
-          <div class="or-divider">または</div>
-          <div id="emailLoginMsg"></div>
-          <form id="emailLoginForm">
-            <div class="field">
-              <label for="loginEmail">メールアドレス</label>
-              <input id="loginEmail" type="email" required>
-            </div>
-            <div class="field">
-              <label for="loginPassword">パスワード</label>
-              <input id="loginPassword" type="password" required>
-            </div>
-            <button type="submit" class="btn btn-dark btn-block">メールでログイン</button>
-          </form>
-          <p style="text-align:center; margin-top:14px;">
-            <a href="#" id="forgotPasswordLink" style="font-size:13px; color:var(--red); font-weight:700;">パスワードをお忘れですか？</a>
-          </p>
-        </div>
-
-        <div id="registerTab" style="display:none;">
-          <button id="googleRegisterBtn" type="button" class="btn btn-primary btn-block">
-            Googleで登録
-          </button>
-          <div class="or-divider">または</div>
-          <div id="emailRegisterMsg"></div>
-          <form id="emailRegisterForm">
-            <div class="field">
-              <label for="regName">お名前（ニックネーム）</label>
-              <input id="regName" type="text" required maxlength="40">
-            </div>
-            <div class="field">
-              <label for="regEmail">メールアドレス</label>
-              <input id="regEmail" type="email" required>
-            </div>
-            <div class="field">
-              <label for="regPassword">パスワード（6文字以上）</label>
-              <input id="regPassword" type="password" required minlength="6">
-            </div>
-            <div class="field">
-              <label for="regPasswordConfirm">パスワード（確認用）</label>
-              <input id="regPasswordConfirm" type="password" required minlength="6">
-            </div>
-            <button type="submit" class="btn btn-dark btn-block">登録する</button>
-          </form>
-        </div>
-
+        <button id="googleLoginBtn" type="button" class="btn btn-primary btn-block">
+          Googleでログイン / 新規登録
+        </button>
         <p class="field hint" style="margin-top:16px; text-align:center;">
           ログインすることで、おやじの会の会員向けサービス（マイページ・ブログ投稿・会員一覧の閲覧）が利用できます。
         </p>
