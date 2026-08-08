@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://oyaji-motohigashihachioji.github.io/sitemap.xml
