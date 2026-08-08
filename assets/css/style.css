@@ -263,3 +263,32 @@ footer a:hover{ color:var(--sun); }
   .hero-photo{ height:78vh; }
 }
 @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
+
+/* ---------- scroll reveal ---------- */
+.reveal{ opacity:0; transform:translateY(20px); transition:opacity .6s ease, transform .6s ease; }
+.reveal.in-view{ opacity:1; transform:translateY(0); }
+
+/* ---------- 季節アイコン ---------- */
+.season-icon{ width:34px; height:34px; display:inline-block; vertical-align:middle; filter:drop-shadow(1px 1px 0 rgba(0,0,0,.25)); }
+.season-icon svg{ width:100%; height:100%; }
+
+/* ---------- 次回イベント / stats / chairman teaser ---------- */
+.next-event{ background:var(--charcoal); padding:36px 0; }
+.next-event-box{
+  display:flex; align-items:center; gap:24px; flex-wrap:wrap;
+  background:var(--paper); border:3px solid var(--sun); border-radius:2px; padding:22px 26px;
+}
+.next-event-badge{
+  background:var(--red); color:#fff; font-weight:900; font-size:12px; letter-spacing:.1em;
+  padding:8px 14px; border-radius:20px; flex-shrink:0; white-space:nowrap;
+}
+.next-event-box h3{ margin:6px 0; font-size:19px; }
+.next-event-date{ font-family:"Shippori Antique B1"; font-size:14px; color:var(--red); font-weight:700; }
+
+.stat-strip{ padding:56px 0 10px; }
+.chairman-teaser{
+  display:flex; align-items:center; gap:20px; background:var(--paper); border:3px solid var(--ink);
+  border-radius:2px; padding:22px 26px; margin-top:10px; flex-wrap:wrap;
+}
+.chairman-teaser .brand-mark{ flex-shrink:0; }
+.chairman-teaser p{ margin:6px 0 0; font-size:13.5px; color:#3a3730; max-width:60ch; }
