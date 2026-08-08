@@ -81,16 +81,18 @@ function renderPost(p) {
         <div class="meta" style="margin-top:8px;">${dateLabel}</div>
         <h1 style="margin:8px 0 22px; font-size:clamp(24px,3.4vw,34px);">${escapeHtml(p.title)}</h1>
         ${
-          images.length
-            ? `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-bottom:24px;">
-                ${images
-                  .map(
-                    (src) =>
-                      `<img src="${escapeHtml(src)}" alt="" loading="lazy" style="width:100%; aspect-ratio:4/3; object-fit:cover; border:2px solid var(--ink); border-radius:2px;">`
-                  )
-                  .join("")}
-              </div>`
-            : ""
+          images.length === 1
+            ? `<img src="${escapeHtml(images[0])}" alt="" loading="lazy" style="width:100%; max-height:640px; object-fit:cover; border:3px solid var(--ink); border-radius:2px; margin-bottom:24px;">`
+            : images.length
+              ? `<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; margin-bottom:24px;">
+                  ${images
+                    .map(
+                      (src) =>
+                        `<img src="${escapeHtml(src)}" alt="" loading="lazy" style="width:100%; aspect-ratio:4/3; object-fit:cover; border:2px solid var(--ink); border-radius:2px;">`
+                    )
+                    .join("")}
+                </div>`
+              : ""
         }
         <div style="white-space:pre-wrap; line-height:1.9; font-size:15px;">${escapeHtml(p.body)}</div>
         <div class="row-actions" style="margin-top:28px;">
