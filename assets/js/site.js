@@ -5,8 +5,10 @@ import { loadPartials } from "./partials.js";
 import { initAuthNav } from "./auth-guard.js";
 import { trackVisit, renderVisitorCount } from "./visitor-tracker.js";
 import { isFirebaseConfigured } from "./firebase-init.js";
+import { initImageFallback } from "./img-fallback.js";
 
 export async function initSite(activePage) {
+  initImageFallback();
   await loadPartials(activePage);
   initAuthNav();
   renderVisitorCount();
