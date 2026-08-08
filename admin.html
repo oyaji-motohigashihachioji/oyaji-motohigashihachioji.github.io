@@ -40,6 +40,16 @@
 
       <div class="admin-panel" id="panel-posts">
         <div class="form-card" style="margin-bottom:32px;">
+          <h3 style="margin-top:0;">旧サイトの過去記事インポート</h3>
+          <p style="font-size:13.5px; color:#3a3730; margin-bottom:16px;">
+            旧サイト（www3.hp-ez.com/hp/teamoyaji）から取得した過去の活動記録156件（予定11・記録116・議事録29）を
+            一括でFirestoreに取り込みます。既にインポート済みの記事は自動的にスキップされるので、
+            何度でも安全に実行できます。
+          </p>
+          <div id="importMsg"></div>
+          <button type="button" id="importLegacyBtn" class="btn btn-primary">過去記事156件をインポートする</button>
+        </div>
+        <div class="form-card" style="margin-bottom:32px;">
           <h3 id="postFormTitle" style="margin-top:0;">新規活動記録を投稿</h3>
           <div id="postFormMsg"></div>
           <form id="postForm">

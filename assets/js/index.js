@@ -55,7 +55,7 @@ function renderGallery(posts) {
   const items = [];
   posts.forEach((p) => {
     (p.images || []).forEach((img) => {
-      items.push({ img, tag: p.category || "", cap: p.title || "" });
+      items.push({ img, tag: p.category || "", cap: p.title || "", id: p.id });
     });
   });
   if (!items.length) return;
@@ -65,11 +65,11 @@ function renderGallery(posts) {
     .slice(0, 9)
     .map(
       (g, i) => `
-      <div class="g-item ${sizeClasses[i % 3]}" data-cat="${escapeHtml(g.tag)}">
+      <a class="g-item ${sizeClasses[i % 3]}" data-cat="${escapeHtml(g.tag)}" href="post.html?id=${g.id}">
         <img src="${escapeHtml(g.img)}" alt="${escapeHtml(g.cap)}">
         <span class="g-tag">${escapeHtml(g.tag)}</span>
         <div class="g-cap">${escapeHtml(g.cap)}</div>
-      </div>`
+      </a>`
     )
     .join("");
 }
@@ -92,7 +92,7 @@ function renderActivityCards(posts) {
           <span class="chip">${escapeHtml(p.category || "記録")}</span>
           <h3>${escapeHtml(p.title)}</h3>
           <p>${escapeHtml(excerpt)}</p>
-          <a class="more" href="#">続きを読む →</a>
+          <a class="more" href="post.html?id=${p.id}">続きを読む →</a>
         </div>
       </article>`;
     })

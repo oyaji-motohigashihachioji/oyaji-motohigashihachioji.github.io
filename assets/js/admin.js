@@ -13,6 +13,7 @@ import {
   query,
   orderBy,
   serverTimestamp,
+  writeBatch,
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 await initSite("admin");
@@ -42,6 +43,7 @@ if (!isFirebaseConfigured) {
     loadBlogPosts();
     loadStats();
     wirePostForm();
+    wireLegacyImport();
   });
 }
 
@@ -132,6 +134,60 @@ function showMsg(elId, type, text) {
   setTimeout(() => {
     if (el.innerHTML.includes(escapeHtml(text))) el.innerHTML = "";
   }, 4000);
+}
+
+/* ---------------- 旧サイト過去記事インポート ---------------- */
+function wireLegacyImport() {
+  const btn = document.getElementById("importLegacyBtn");
+  btn.addEventListener("click", async () => {
+    if (!confirm("旧サイトの過去記事156件をFirestoreにインポートします。よろしいですか？")) return;
+    btn.disabled = true;
+    btn.textContent = "インポート中…";
+    try {
+      const [existingSnap, legacyPosts] = await Promise.all([
+        getDocs(collection(db, "posts")),
+        fetch("assets/data/legacy-posts.json").then((r) => r.json()),
+      ]);
+      const existingLegacyIds = new Set(
+        existingSnap.docs.map((d) => d.data().legacyId).filter(Boolean)
+      );
+      const toImport = legacyPosts.filter((p) => !existingLegacyIds.has(p.id));
+
+      if (toImport.length === 0) {
+        showMsg("importMsg", "info", "インポート済みです。新規に追加できる記事はありません。");
+        return;
+      }
+
+      // Firestore の writeBatch は1回あたり最大500件まで
+      const chunkSize = 450;
+      for (let i = 0; i < toImport.length; i += chunkSize) {
+        const batch = writeBatch(db);
+        toImport.slice(i, i + chunkSize).forEach((p) => {
+          const ref = doc(collection(db, "posts"));
+          batch.set(ref, {
+            title: p.title,
+            body: p.bodyText,
+            category: p.category,
+            date: p.date,
+            images: p.images || [],
+            published: true,
+            legacyId: p.id,
+            createdAt: serverTimestamp(),
+          });
+        });
+        await batch.commit();
+      }
+
+      showMsg("importMsg", "success", `${toImport.length}件の過去記事をインポートしました。`);
+      loadPosts();
+    } catch (e) {
+      console.error(e);
+      showMsg("importMsg", "error", `インポートに失敗しました: ${e.message}`);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "過去記事156件をインポートする";
+    }
+  });
 }
 
 /* ---------------- 活動記録投稿 ---------------- */

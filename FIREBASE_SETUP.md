@@ -35,7 +35,13 @@
 `The query requires an index...` というエラーと Firestore Console への直接リンクが表示されることがあります（`blogPosts`・`users` の絞り込み+並び替えクエリで発生）。
 表示されたリンクをクリックして「インデックスを作成」を押せば数分で解消します。
 
-## 4. 画像の運用方法（Googleドライブ）
+## 4. 旧サイトの過去記事インポート
+
+旧サイト（www3.hp-ez.com/hp/teamoyaji）の活動記録156件を [assets/data/legacy-posts.json](assets/data/legacy-posts.json) にあらかじめ取り込んであります（画像は旧サイトのURLをそのまま使用）。
+管理者ページ（`admin.html`）→「活動記録投稿」タブ上部の**「過去記事156件をインポートする」**ボタンを1回押すだけで、Firestoreの`posts`コレクションに一括登録されます。
+既にインポート済みの記事は`legacyId`で判定して自動的にスキップされるため、間違って複数回押しても重複登録されません。
+
+## 5. 画像の運用方法（Googleドライブ）
 
 1. 写真は [Googleドライブの共有フォルダ](https://drive.google.com/drive/folders/1bBISzop7CiJjm3lglWox-vgEF4IG9FfG) にアップロードする
 2. アップロードした画像を右クリック →「共有」→ 一般アクセスを「リンクを知っている全員」に変更してリンクをコピー
@@ -43,7 +49,7 @@
    - 例: `https://drive.google.com/file/d/XXXXXXXXXXXXX/view?usp=sharing`
    - サイト側で自動的に `https://lh3.googleusercontent.com/d/XXXXXXXXXXXXX` 形式の直リンクに変換して保存する
 
-## 5. EmailJS（お問い合わせフォーム）の設定
+## 6. EmailJS（お問い合わせフォーム）の設定
 
 1. [EmailJS](https://www.emailjs.com/) で無料アカウントを作成
 2. 「Email Services」→ 送信元にしたいメールサービス（Gmail等）を追加し、`oyaji.motohigashihachioji@gmail.com` を受信先として設定 → **Service ID** をメモ
@@ -51,7 +57,7 @@
 4. 「Account」→「General」の **Public Key** をメモ
 5. [assets/js/emailjs-config.js](assets/js/emailjs-config.js) の `YOUR_EMAILJS_PUBLIC_KEY` / `YOUR_EMAILJS_SERVICE_ID` / `YOUR_EMAILJS_TEMPLATE_ID` を実際の値に置き換える
 
-## 6. GitHub Pages で公開する
+## 7. GitHub Pages で公開する
 
 1. GitHub リポジトリの Settings →「Pages」→ Source を `main` ブランチ / `/ (root)` に設定
 2. `https://oyaji-motohigashihachioji.github.io/` で公開される
