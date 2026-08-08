@@ -27,7 +27,7 @@ if (!isFirebaseConfigured) {
       return;
     }
     gate.style.display = "none";
-    list.style.display = "grid";
+    list.style.display = "flex";
     loadMembers();
   });
 }
@@ -45,14 +45,23 @@ async function loadMembers() {
       .map((d) => {
         const m = d.data();
         const year = m.joinedAt?.toDate ? m.joinedAt.toDate().getFullYear() : "-";
-        return `<article class="card">
-          <div class="body" style="text-align:center; padding-top:26px;">
+        const hasDetail = m.hobby || m.bio;
+        return `<article class="member-card">
+          <div class="member-card-top">
             ${m.photoURL ? `<img class="avatar avatar-lg" src="${escapeHtml(m.photoURL)}" alt="" style="margin:0 auto 14px;">` : ""}
             <h3 style="margin-bottom:6px;">${escapeHtml(m.displayName)}</h3>
             <span class="badge badge-role">${escapeHtml(m.position || "一般会員")}</span>
-            ${m.role === "admin" ? '<span class="badge badge-admin" style="margin-left:6px;">管理者</span>' : ""}
-            <p style="margin-top:12px; font-size:12.5px; color:#7d7562;">${year}年 入会</p>
+            ${m.role === "admin" ? '<span class="badge badge-admin">管理者</span>' : ""}
+            <p class="meta">${year}年 入会${m.age ? ` ・ ${escapeHtml(String(m.age))}歳` : ""}</p>
           </div>
+          ${
+            hasDetail
+              ? `<div class="member-card-detail">
+                  ${m.hobby ? `<p><b>趣味：</b>${escapeHtml(m.hobby)}</p>` : ""}
+                  ${m.bio ? `<p class="bio">${escapeHtml(m.bio)}</p>` : ""}
+                </div>`
+              : ""
+          }
         </article>`;
       })
       .join("");
