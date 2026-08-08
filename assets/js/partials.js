@@ -5,8 +5,8 @@ export async function loadPartials(activePage) {
   const footerSlot = document.getElementById("site-footer");
 
   const [headerHtml, footerHtml] = await Promise.all([
-    fetch("assets/partials/header.html").then((r) => r.text()),
-    fetch("assets/partials/footer.html").then((r) => r.text()),
+    fetch("assets/partials/header.html", { cache: "no-cache" }).then((r) => r.text()),
+    fetch("assets/partials/footer.html", { cache: "no-cache" }).then((r) => r.text()),
   ]);
 
   if (headerSlot) headerSlot.innerHTML = headerHtml;
