@@ -2,6 +2,7 @@ import { initSite } from "./site.js";
 import { watchAuth, isApproved, isAdmin, escapeHtml } from "./auth-guard.js";
 import { db, isFirebaseConfigured } from "./firebase-init.js";
 import { convertDriveLink } from "./drive-link.js";
+import { renderMarkdown, stripMarkdown } from "./markdown.js";
 import {
   collection,
   doc,
@@ -158,7 +159,7 @@ async function showDetail(id) {
         <div class="meta">${escapeHtml(p.authorName || "")} ・ ${date}</div>
         <h1 style="margin:6px 0 22px; font-size:clamp(24px,3.4vw,34px);">${escapeHtml(p.title)}</h1>
         ${p.image ? `<img src="${escapeHtml(p.image)}" alt="" style="width:100%; border:3px solid var(--ink); border-radius:2px; margin-bottom:22px;">` : ""}
-        <div style="white-space:pre-wrap; line-height:1.9; font-size:15px;">${escapeHtml(p.body)}</div>
+        <div class="markdown-body" style="line-height:1.9; font-size:15px;">${renderMarkdown(p.body)}</div>
         <div class="row-actions" style="margin-top:28px;">
           ${canEdit ? `<a href="blog.html?edit=${id}" class="btn btn-dark">編集する</a>` : ""}
           ${canEdit ? `<button type="button" id="deleteDetailBtn" class="btn btn-ghost" style="border-color:var(--red); color:var(--red);">削除する</button>` : ""}
@@ -223,7 +224,8 @@ async function loadListPage(append) {
 function renderCard(d) {
   const p = d.data();
   const date = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString("ja-JP") : "";
-  const excerpt = (p.body || "").slice(0, 70) + ((p.body || "").length > 70 ? "…" : "");
+  const plain = stripMarkdown(p.body || "");
+  const excerpt = plain.slice(0, 70) + (plain.length > 70 ? "…" : "");
   return `
     <article class="card">
       <div class="thumb">${p.image ? `<img src="${escapeHtml(p.image)}" alt="">` : ""}</div>

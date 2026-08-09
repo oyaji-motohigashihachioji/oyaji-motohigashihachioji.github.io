@@ -312,3 +312,12 @@ footer a:hover{ color:var(--sun); }
 .member-row-detail b{ color:var(--red); font-weight:700; }
 .member-row-detail .bio{ color:#3a3730; white-space:pre-wrap; }
 @media (max-width:640px){ .member-row-detail{ padding-left:16px; } }
+
+/* ---------- Markdown本文 ---------- */
+.markdown-body p{ margin:0 0 14px; }
+.markdown-body p:last-child{ margin-bottom:0; }
+.markdown-body h2{ font-size:22px; font-weight:700; margin:26px 0 12px; }
+.markdown-body h2:first-child{ margin-top:0; }
+.markdown-body h3{ font-size:18px; font-weight:700; margin:20px 0 10px; }
+.markdown-body h3:first-child{ margin-top:0; }
+.markdown-body b{ color:var(--red); }

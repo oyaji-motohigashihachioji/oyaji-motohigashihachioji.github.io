@@ -1,6 +1,7 @@
 import { initSite } from "./site.js";
 import { db, isFirebaseConfigured } from "./firebase-init.js";
 import { escapeHtml } from "./auth-guard.js";
+import { renderMarkdown } from "./markdown.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 await initSite("chairman");
@@ -29,7 +30,7 @@ async function loadMessage() {
           : ""
       }
       ${updated ? `<div class="meta" style="margin-bottom:14px; text-align:center;">最終更新: ${updated}</div>` : ""}
-      <div style="white-space:pre-wrap; line-height:1.9; font-size:15.5px;">${escapeHtml(d.body)}</div>
+      <div class="markdown-body" style="line-height:1.9; font-size:15.5px;">${renderMarkdown(d.body)}</div>
     `;
   } catch (e) {
     console.error(e);

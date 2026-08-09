@@ -2,6 +2,7 @@ import { initSite } from "./site.js";
 import { db, isFirebaseConfigured } from "./firebase-init.js";
 import { escapeHtml } from "./auth-guard.js";
 import { mountSeasonIcon } from "./season.js";
+import { stripMarkdown } from "./markdown.js";
 import {
   collection,
   doc,
@@ -93,7 +94,8 @@ function renderActivityCards(posts) {
     .map((p) => {
       const [y, m, d] = (p.date || "").split("-");
       const thumb = (p.images || [])[0] || "";
-      const excerpt = (p.body || "").slice(0, 46) + ((p.body || "").length > 46 ? "…" : "");
+      const plain = stripMarkdown(p.body || "");
+      const excerpt = plain.slice(0, 46) + (plain.length > 46 ? "…" : "");
       return `<article class="card">
         <div class="thumb">
           ${thumb ? `<img src="${escapeHtml(thumb)}" alt="${escapeHtml(p.title)}">` : ""}
@@ -174,7 +176,8 @@ async function loadNextEvent() {
 
     const [y, m, d] = (upcoming.date || "").split("-");
     const dateLabel = y && m && d ? `${y}年${parseInt(m, 10)}月${parseInt(d, 10)}日` : "";
-    const excerpt = (upcoming.body || "").slice(0, 60) + ((upcoming.body || "").length > 60 ? "…" : "");
+    const upcomingPlain = stripMarkdown(upcoming.body || "");
+    const excerpt = upcomingPlain.slice(0, 60) + (upcomingPlain.length > 60 ? "…" : "");
 
     document.getElementById("nextEventDate").textContent = dateLabel;
     document.getElementById("nextEventTitle").textContent = upcoming.title || "";
