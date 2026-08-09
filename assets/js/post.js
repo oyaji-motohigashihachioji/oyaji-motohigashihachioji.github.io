@@ -1,6 +1,7 @@
 import { initSite } from "./site.js";
 import { db, isFirebaseConfigured } from "./firebase-init.js";
 import { escapeHtml } from "./auth-guard.js";
+import { renderMarkdown } from "./markdown.js";
 import {
   doc,
   getDoc,
@@ -94,7 +95,7 @@ function renderPost(p) {
                 </div>`
               : ""
         }
-        <div style="white-space:pre-wrap; line-height:1.9; font-size:15px;">${escapeHtml(p.body)}</div>
+        <div class="markdown-body" style="line-height:1.9; font-size:15px;">${renderMarkdown(p.body)}</div>
         <div class="row-actions" style="margin-top:28px;">
           <a href="index.html#gallery" class="btn btn-ghost" style="border-color:var(--ink); color:var(--ink);">活動記録一覧へ戻る</a>
         </div>
