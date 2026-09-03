@@ -2,6 +2,7 @@ import { initSite } from "./site.js";
 import { watchAuth, isAdmin, escapeHtml } from "./auth-guard.js";
 import { db, isFirebaseConfigured } from "./firebase-init.js";
 import { convertDriveLink } from "./drive-link.js";
+import { extractYoutubeId } from "./youtube-link.js";
 import {
   collection,
   doc,
@@ -46,6 +47,8 @@ if (!isFirebaseConfigured) {
     wirePostForm();
     wireLegacyImport();
     wireChairmanForm();
+    wireVideoForm();
+    loadVideos();
   });
 }
 
@@ -386,6 +389,110 @@ function wireChairmanForm() {
       btn.disabled = false;
     }
   });
+}
+
+/* ---------------- 動画管理 ---------------- */
+function wireVideoForm() {
+  const form = document.getElementById("videoForm");
+  const cancelBtn = document.getElementById("videoCancelEdit");
+  const title = document.getElementById("videoFormTitle");
+
+  cancelBtn.addEventListener("click", () => resetVideoForm());
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("videoId").value;
+    const youtubeId = extractYoutubeId(document.getElementById("videoUrl").value.trim());
+    const msg = document.getElementById("videoFormMsg");
+    if (!youtubeId) {
+      showMsg("videoFormMsg", "error", "YouTube URLからIDを読み取れませんでした。URLをご確認ください。");
+      return;
+    }
+    const data = {
+      youtubeId,
+      title: document.getElementById("videoTitle").value.trim(),
+      category: document.getElementById("videoCategory").value.trim(),
+      date: document.getElementById("videoDate").value,
+      published: document.getElementById("videoPublished").value === "true",
+    };
+    try {
+      if (id) {
+        await updateDoc(doc(db, "videos", id), data);
+      } else {
+        await addDoc(collection(db, "videos"), { ...data, createdAt: serverTimestamp() });
+      }
+      showMsg("videoFormMsg", "success", "保存しました。");
+      resetVideoForm();
+      loadVideos();
+    } catch (e) {
+      console.error(e);
+      showMsg("videoFormMsg", "error", `保存に失敗しました: ${e.message}`);
+    }
+  });
+
+  function resetVideoForm() {
+    form.reset();
+    document.getElementById("videoId").value = "";
+    title.textContent = "動画を追加";
+    cancelBtn.style.display = "none";
+  }
+}
+
+async function loadVideos() {
+  const wrap = document.getElementById("videosTableWrap");
+  try {
+    const snap = await getDocs(query(collection(db, "videos"), orderBy("date", "desc")));
+    if (snap.empty) {
+      wrap.innerHTML = `<div class="empty-state">動画がまだありません。</div>`;
+      return;
+    }
+    wrap.innerHTML = `<div class="table-wrap"><table class="admin-table">
+      <thead><tr><th>日付</th><th>タイトル</th><th>カテゴリー</th><th>状態</th><th>操作</th></tr></thead>
+      <tbody>${snap.docs
+        .map((d) => {
+          const v = d.data();
+          return `<tr>
+            <td>${escapeHtml(v.date || "")}</td>
+            <td><a href="https://www.youtube.com/watch?v=${escapeHtml(v.youtubeId)}" target="_blank" style="color:var(--red); font-weight:700;">${escapeHtml(v.title)}</a></td>
+            <td>${escapeHtml(v.category || "")}</td>
+            <td>${v.published ? '<span class="badge badge-approved">公開</span>' : '<span class="badge badge-pending">下書き</span>'}</td>
+            <td class="row-actions">
+              <button type="button" class="link-btn" data-edit="${d.id}">編集</button>
+              <button type="button" class="link-btn" data-delete="${d.id}">削除</button>
+            </td>
+          </tr>`;
+        })
+        .join("")}</tbody>
+    </table></div>`;
+
+    wrap.querySelectorAll("[data-edit]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const snap2 = await getDoc(doc(db, "videos", btn.dataset.edit));
+        if (!snap2.exists()) return;
+        const v = snap2.data();
+        document.getElementById("videoId").value = snap2.id;
+        document.getElementById("videoUrl").value = `https://www.youtube.com/watch?v=${v.youtubeId || ""}`;
+        document.getElementById("videoTitle").value = v.title || "";
+        document.getElementById("videoCategory").value = v.category || "";
+        document.getElementById("videoDate").value = v.date || "";
+        document.getElementById("videoPublished").value = String(!!v.published);
+        document.getElementById("videoFormTitle").textContent = "動画を編集";
+        document.getElementById("videoCancelEdit").style.display = "inline-flex";
+        document.querySelector('#adminTabs button[data-tab="videos"]').click();
+        document.getElementById("videoForm").scrollIntoView({ behavior: "smooth" });
+      });
+    });
+    wrap.querySelectorAll("[data-delete]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("この動画を削除しますか？")) return;
+        await deleteDoc(doc(db, "videos", btn.dataset.delete));
+        loadVideos();
+      });
+    });
+  } catch (e) {
+    console.error(e);
+    wrap.innerHTML = `<div class="alert alert-error">読み込みに失敗しました: ${escapeHtml(e.message)}</div>`;
+  }
 }
 
 /* ---------------- アクセス状況 ---------------- */

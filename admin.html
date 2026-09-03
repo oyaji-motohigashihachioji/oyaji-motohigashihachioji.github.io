@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&family=Shippori+Antique+B1&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Yomogi&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260809b">
+<link rel="stylesheet" href="assets/css/style.css?v=20260810">
 </head>
 <body>
 
@@ -34,6 +34,7 @@
         <button type="button" data-tab="posts">活動記録投稿</button>
         <button type="button" data-tab="blog">ブログ管理</button>
         <button type="button" data-tab="chairman">会長から一言</button>
+        <button type="button" data-tab="videos">動画管理</button>
         <button type="button" data-tab="stats">アクセス状況</button>
       </div>
 
@@ -114,6 +115,38 @@
             <button type="submit" class="btn btn-primary">保存する</button>
           </form>
         </div>
+      </div>
+
+      <div class="admin-panel" id="panel-videos">
+        <div class="form-card" style="margin-bottom:32px;">
+          <h3 id="videoFormTitle" style="margin-top:0;">動画を追加</h3>
+          <div id="videoFormMsg"></div>
+          <form id="videoForm">
+            <input type="hidden" id="videoId">
+            <div class="field">
+              <label for="videoUrl">YouTube URL</label>
+              <input id="videoUrl" required placeholder="https://www.youtube.com/watch?v=xxxxxxxxxxx">
+              <div class="hint">watch?v=、youtu.be/、shorts/ など、通常のYouTubeリンクをそのまま貼り付けてください。</div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="videoTitle">タイトル</label><input id="videoTitle" required maxlength="80"></div>
+              <div class="field"><label for="videoCategory">カテゴリー（任意）</label><input id="videoCategory" placeholder="運動会・BBQ等" maxlength="30"></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="videoDate">日付</label><input id="videoDate" type="date" required></div>
+              <div class="field"><label for="videoPublished">公開状態</label>
+                <select id="videoPublished">
+                  <option value="true">公開</option>
+                  <option value="false">下書き</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">保存する</button>
+            <button type="button" id="videoCancelEdit" class="btn btn-dark" style="display:none;">編集をキャンセル</button>
+          </form>
+        </div>
+        <h3>登録済みの動画</h3>
+        <div id="videosTableWrap"><div class="empty-state">読み込み中…</div></div>
       </div>
 
       <div class="admin-panel" id="panel-stats">
