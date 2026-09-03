@@ -3,6 +3,7 @@ import { db, isFirebaseConfigured } from "./firebase-init.js";
 import { escapeHtml } from "./auth-guard.js";
 import { mountSeasonIcon } from "./season.js";
 import { stripMarkdown } from "./markdown.js";
+import { renderVideoCard, wireVideoThumbs } from "./video-card.js";
 import {
   collection,
   doc,
@@ -27,6 +28,7 @@ if (isFirebaseConfigured) {
   loadNextEvent();
   loadPostCount();
   loadChairmanTeaserPhoto();
+  loadVideoTeaser();
 }
 
 function wireGalleryFilter() {
@@ -200,6 +202,22 @@ async function loadChairmanTeaserPhoto() {
     el.outerHTML = `<img src="${escapeHtml(imageUrl)}" alt="会長" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:3px solid var(--ink); flex-shrink:0;">`;
   } catch (e) {
     console.warn("会長の写真の取得に失敗しました:", e);
+  }
+}
+
+// 公開済みの動画があれば、トップページに最新3件をプレビュー表示する
+async function loadVideoTeaser() {
+  try {
+    const snap = await getDocs(
+      query(collection(db, "videos"), where("published", "==", true), orderBy("date", "desc"), limit(3))
+    );
+    if (snap.empty) return;
+    const grid = document.getElementById("videoTeaserGrid");
+    grid.innerHTML = snap.docs.map((d) => renderVideoCard(d.data())).join("");
+    wireVideoThumbs(grid);
+    document.getElementById("videoTeaserSection").style.display = "block";
+  } catch (e) {
+    console.warn("動画の取得に失敗しました:", e);
   }
 }
 
