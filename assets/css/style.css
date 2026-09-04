@@ -260,7 +260,8 @@ footer a:hover{ color:var(--sun); }
   .masonry{ column-count:1; }
   .card-grid, .card-grid.cols-2{ grid-template-columns:1fr; }
   .foot-grid{ grid-template-columns:1fr; }
-  .hero-photo{ height:78vh; }
+  .hero-photo{ height:70vh; min-height:440px; }
+  .hero-photo img{ object-position:center 25%; }
 }
 @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
 
