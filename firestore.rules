@@ -52,6 +52,12 @@ service cloud.firestore {
       allow update, delete: if isAdmin() || (isSignedIn() && resource.data.authorUid == request.auth.uid);
     }
 
+    // 動画一覧: 公開済みは誰でも閲覧可。書き込みは管理者のみ。
+    match /videos/{videoId} {
+      allow read: if (resource.data.published == true) || isAdmin();
+      allow write: if isAdmin();
+    }
+
     // サイト固定コンテンツ（会長から一言など）: 誰でも閲覧可、書き込みは管理者のみ。
     match /siteContent/{docId} {
       allow read: if true;
