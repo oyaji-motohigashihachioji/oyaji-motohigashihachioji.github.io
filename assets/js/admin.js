@@ -2,6 +2,7 @@ import { initSite } from "./site.js";
 import { watchAuth, isAdmin, escapeHtml } from "./auth-guard.js";
 import { db, isFirebaseConfigured } from "./firebase-init.js";
 import { convertDriveLink } from "./drive-link.js";
+import { HISTORY_DEFAULT_BODY } from "./history-default.js";
 import { extractYoutubeId } from "./youtube-link.js";
 import {
   collection,
@@ -47,6 +48,7 @@ if (!isFirebaseConfigured) {
     wirePostForm();
     wireLegacyImport();
     wireChairmanForm();
+    wireHistoryForm();
     wireVideoForm();
     loadVideos();
   });
@@ -385,6 +387,53 @@ function wireChairmanForm() {
     } catch (e) {
       console.error(e);
       showMsg("chairmanMsg", "error", `保存に失敗しました: ${e.message}`);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+}
+
+/* ---------------- おやじの会の歴史 ---------------- */
+function wireHistoryForm() {
+  const form = document.getElementById("historyForm");
+  const textarea = document.getElementById("historyBody");
+  const imageInput = document.getElementById("historyImage");
+  const loadDraftBtn = document.getElementById("historyLoadDraft");
+
+  getDoc(doc(db, "siteContent", "history"))
+    .then((snap) => {
+      if (snap.exists() && snap.data().body) {
+        textarea.value = snap.data().body || "";
+        imageInput.value = snap.data().imageUrl || "";
+      } else {
+        textarea.value = HISTORY_DEFAULT_BODY;
+      }
+    })
+    .catch((e) => console.error("歴史ページの内容の取得に失敗しました:", e));
+
+  loadDraftBtn.addEventListener("click", () => {
+    if (textarea.value.trim() && !confirm("入力中の本文をたたき台の文章で上書きします。よろしいですか？")) return;
+    textarea.value = HISTORY_DEFAULT_BODY;
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector("button[type=submit]");
+    btn.disabled = true;
+    try {
+      await setDoc(
+        doc(db, "siteContent", "history"),
+        {
+          body: textarea.value.trim(),
+          imageUrl: convertDriveLink(imageInput.value.trim()),
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+      showMsg("historyMsg", "success", "保存しました。");
+    } catch (e) {
+      console.error(e);
+      showMsg("historyMsg", "error", `保存に失敗しました: ${e.message}`);
     } finally {
       btn.disabled = false;
     }
