@@ -34,6 +34,7 @@
         <button type="button" data-tab="posts">活動記録投稿</button>
         <button type="button" data-tab="blog">ブログ管理</button>
         <button type="button" data-tab="chairman">会長から一言</button>
+        <button type="button" data-tab="history">おやじの会の歴史</button>
         <button type="button" data-tab="stats">アクセス状況</button>
       </div>
 
@@ -112,6 +113,31 @@
               <div class="hint"># 見出し / ## 小見出し / **太字** が使えます</div>
             </div>
             <button type="submit" class="btn btn-primary">保存する</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="admin-panel" id="panel-history">
+        <div class="form-card" style="max-width:760px;">
+          <h3 style="margin-top:0;">おやじの会の歴史を編集</h3>
+          <p style="font-size:13.5px; color:#3a3730; margin-bottom:16px;">
+            ここで保存した内容が「おやじの会の歴史」ページ（<a href="history.html" target="_blank" style="color:var(--red); font-weight:700;">history.html</a>）に公開されます。
+            まだ何も保存されていない間は、旧サイトの活動記録などから作成したたたき台の文章が表示されています。
+          </p>
+          <div id="historyMsg"></div>
+          <form id="historyForm">
+            <div class="field">
+              <label for="historyImage">イメージ画像URL（任意・Googleドライブ共有リンク可）</label>
+              <input id="historyImage" type="text" placeholder="https://drive.google.com/file/d/xxxxxxxx/view?usp=sharing">
+              <div class="hint">Googleドライブで画像を「リンクを知っている全員が閲覧可」に共有し、そのURLを貼り付けてください。自動的に表示用URLへ変換されます。</div>
+            </div>
+            <div class="field">
+              <label for="historyBody">本文</label>
+              <textarea id="historyBody" style="min-height:400px;" maxlength="8000"></textarea>
+              <div class="hint"># 見出し / ## 小見出し / **太字** が使えます</div>
+            </div>
+            <button type="submit" class="btn btn-primary">保存する</button>
+            <button type="button" id="historyLoadDraft" class="btn btn-dark">たたき台の文章を読み込む</button>
           </form>
         </div>
       </div>
