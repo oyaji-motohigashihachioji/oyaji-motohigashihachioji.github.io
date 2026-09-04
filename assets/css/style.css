@@ -260,8 +260,10 @@ footer a:hover{ color:var(--sun); }
   .masonry{ column-count:1; }
   .card-grid, .card-grid.cols-2{ grid-template-columns:1fr; }
   .foot-grid{ grid-template-columns:1fr; }
-  .hero-photo{ height:70vh; min-height:440px; }
-  .hero-photo img{ object-position:center 25%; }
+  .hero-photo{ height:auto; min-height:0; }
+  .hero-photo img{ position:static; height:auto; object-fit:contain; background:var(--ink); }
+  .hero-photo::after{ display:none; }
+  .hero-content{ position:static; padding:24px 0 32px; background:var(--ink); }
 }
 @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
 
