@@ -29,6 +29,7 @@ if (isFirebaseConfigured) {
   loadPostCount();
   loadChairmanTeaserPhoto();
   loadVideoTeaser();
+  loadHomeBanner();
 }
 
 function wireGalleryFilter() {
@@ -202,6 +203,19 @@ async function loadChairmanTeaserPhoto() {
     el.outerHTML = `<img src="${escapeHtml(imageUrl)}" alt="会長" style="width:56px; height:56px; border-radius:50%; object-fit:cover; border:3px solid var(--ink); flex-shrink:0;">`;
   } catch (e) {
     console.warn("会長の写真の取得に失敗しました:", e);
+  }
+}
+
+// 管理者ページでバナー画像が設定されていれば、トップページのヒーロー画像を差し替える
+async function loadHomeBanner() {
+  try {
+    const snap = await getDoc(doc(db, "siteContent", "homeBanner"));
+    const imageUrl = snap.exists() ? snap.data().imageUrl : "";
+    if (!imageUrl) return;
+    document.getElementById("heroPhoto").src = imageUrl;
+    document.querySelector('meta[property="og:image"]')?.setAttribute("content", imageUrl);
+  } catch (e) {
+    console.warn("バナー画像の取得に失敗しました:", e);
   }
 }
 

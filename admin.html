@@ -34,6 +34,7 @@
         <button type="button" data-tab="posts">活動記録投稿</button>
         <button type="button" data-tab="blog">ブログ管理</button>
         <button type="button" data-tab="chairman">会長から一言</button>
+        <button type="button" data-tab="banner">トップページ画像</button>
         <button type="button" data-tab="history">おやじの会の歴史</button>
         <button type="button" data-tab="videos">動画管理</button>
         <button type="button" data-tab="stats">アクセス状況</button>
@@ -112,6 +113,27 @@
               <label for="chairmanBody">本文</label>
               <textarea id="chairmanBody" style="min-height:280px;" maxlength="4000" placeholder="会員・保護者の皆さまへのメッセージをここに記入してください。"></textarea>
               <div class="hint"># 見出し / ## 小見出し / **太字** が使えます</div>
+            </div>
+            <button type="submit" class="btn btn-primary">保存する</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="admin-panel" id="panel-banner">
+        <div class="form-card" style="max-width:760px;">
+          <h3 style="margin-top:0;">トップページのバナー画像を編集</h3>
+          <p style="font-size:13.5px; color:#3a3730; margin-bottom:16px;">
+            ここで保存した画像がトップページのメインビジュアル（ヒーローバナー）に表示されます。
+          </p>
+          <div id="bannerMsg"></div>
+          <form id="bannerForm">
+            <div class="field">
+              <label for="bannerImage">バナー画像URL（Googleドライブ共有リンク可）</label>
+              <input id="bannerImage" type="text" required placeholder="https://drive.google.com/file/d/xxxxxxxx/view?usp=sharing">
+              <div class="hint">Googleドライブで画像を「リンクを知っている全員が閲覧可」に共有し、そのURLを貼り付けてください。自動的に表示用URLへ変換されます。横長（16:9〜1.8:1程度）の写真が綺麗に収まります。</div>
+            </div>
+            <div class="field">
+              <img id="bannerPreview" src="" alt="プレビュー" style="display:none; max-width:100%; border:3px solid var(--ink);">
             </div>
             <button type="submit" class="btn btn-primary">保存する</button>
           </form>

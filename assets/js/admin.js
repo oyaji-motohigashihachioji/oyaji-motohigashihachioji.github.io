@@ -48,6 +48,7 @@ if (!isFirebaseConfigured) {
     wirePostForm();
     wireLegacyImport();
     wireChairmanForm();
+    wireBannerForm();
     wireHistoryForm();
     wireVideoForm();
     loadVideos();
@@ -387,6 +388,56 @@ function wireChairmanForm() {
     } catch (e) {
       console.error(e);
       showMsg("chairmanMsg", "error", `保存に失敗しました: ${e.message}`);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+}
+
+/* ---------------- トップページ画像 ---------------- */
+function wireBannerForm() {
+  const form = document.getElementById("bannerForm");
+  const imageInput = document.getElementById("bannerImage");
+  const preview = document.getElementById("bannerPreview");
+
+  getDoc(doc(db, "siteContent", "homeBanner"))
+    .then((snap) => {
+      const url = snap.exists() ? snap.data().imageUrl || "" : "";
+      if (url) {
+        imageInput.value = url;
+        preview.src = url;
+        preview.style.display = "block";
+      }
+    })
+    .catch((e) => console.error("バナー画像の取得に失敗しました:", e));
+
+  imageInput.addEventListener("input", () => {
+    const url = convertDriveLink(imageInput.value.trim());
+    if (url) {
+      preview.src = url;
+      preview.style.display = "block";
+    } else {
+      preview.style.display = "none";
+    }
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector("button[type=submit]");
+    btn.disabled = true;
+    try {
+      await setDoc(
+        doc(db, "siteContent", "homeBanner"),
+        {
+          imageUrl: convertDriveLink(imageInput.value.trim()),
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+      showMsg("bannerMsg", "success", "保存しました。トップページに反映されます。");
+    } catch (e) {
+      console.error(e);
+      showMsg("bannerMsg", "error", `保存に失敗しました: ${e.message}`);
     } finally {
       btn.disabled = false;
     }
